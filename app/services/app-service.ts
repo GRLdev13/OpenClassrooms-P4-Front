@@ -15,6 +15,11 @@ import type {
   DeleteFileDto,
   DownloadFileDto,
 } from "~/app/dto/file/fileDTo";
+import type {
+  GetTagDto,
+  AddTagDto,
+  LinkTagDto,
+} from "~/app/dto/tag/TagDto";
 
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({
@@ -105,11 +110,9 @@ export const dashBoardApi = createApi({
         },
       }),
     }),
-    getFile: builder.mutation<GetFileDto, Partial<GetFileDto>>({
-      query: (file) => ({
-        url: `files/${file.id}`,
-        method: "GET",
-      }),
+      getFiles: builder.query<GetFileDto, string>({
+      query: (name) => `dashboard`,
+      providesTags: ["Dashboard"],
     }),
     downloadFile: builder.mutation<DownloadFileDto, Partial<DownloadFileDto>>({
       query: (file) => ({
@@ -123,6 +126,25 @@ export const dashBoardApi = createApi({
         method: "DELETE",
       }),
     }),
+    addTag: builder.mutation<GetTagDto, Partial<AddTagDto>>({
+      query: (tag) => ({
+        url: `tags`,
+        method: "POST",
+        body: {
+          name: tag.name,
+        },
+      }),
+    }),
+    getTags: builder.query<GetTagDto[], void>({
+      query: () => `tags`,
+      providesTags: ["Dashboard"],
+    }),
+    deleteTag: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `tags/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -133,6 +155,6 @@ export const { useUpdateUserMutation } = dashBoardApi;
 export const { useUpdateUserPasswordMutation } = dashBoardApi;
 export const { useDeleteUserMutation } = dashBoardApi;
 export const { useUploadFileMutation } = dashBoardApi;
-export const { useGetFileMutation } = dashBoardApi;
+export const { useGetFilesQuery } = dashBoardApi;
 export const { useDownloadFileMutation } = dashBoardApi;
 export const { useDeleteFileMutation } = dashBoardApi;
