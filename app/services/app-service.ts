@@ -1,25 +1,16 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type {
-  LoginUserDTO,
-  RegisterUserDTO,
-  UpdateUserDTO,
-  LoggedUserDTO,
-  DeleteUserDTO,
-  UpdateUserPasswordDTO,
-} from "~/app/dto/UserDTO";
-import type {
-  FileDto,
-  CreateFileDto,
-  GetFileDto,
-  DeleteFileDto,
-  DownloadFileDto,
-} from "~/app/dto/file/fileDTo";
-import type {
-  GetTagDto,
-  AddTagDto,
-  LinkTagDto,
-} from "~/app/dto/tag/TagDto";
+import type { LoginUserDTO } from "~/dto/user/LoginUserDTO";
+import type { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
+import type { LoggedUserDTO } from "~/dto/user/LoggedUserDTO";
+import type { DeleteUserDTO } from "~/dto/user/DeleteUserDTO";
+import type { CreateFileDto } from "~/dto/file/CreateFileDto";
+import type { GetFileDto } from "~/dto/file/GetFileDto";
+import type { DeleteFileDto } from "~/dto/file/DeleteFileDto";
+import type { DownloadFileDto } from "~/dto/file/DownloadFileDto";
+import type { GetTagDto } from "~/dto/tag/GetTagDto";
+import type { AddTagDto } from "~/dto/tag/AddTagDto";
+
 
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({
@@ -64,30 +55,6 @@ export const dashBoardApi = createApi({
         },
       }),
     }),
-    updateUser: builder.mutation<UpdateUserDTO, Partial<UpdateUserDTO>>({
-      query: (user) => ({
-        url: `user`,
-        method: "POST",
-        body: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          new_email: user.new_email,
-          old_email: user.old_email,
-        },
-      }),
-    }),
-    updateUserPassword: builder.mutation<boolean, Partial<UpdateUserPasswordDTO>>({
-      query: (user) => ({
-        url: `user/password`,
-        method: "POST",
-        body: {
-          email: user.email,
-          password: user.password,
-          new_password: user.new_password,
-          confirm_password: user.confirm_password,
-        },
-      }),
-    }),
     deleteUser: builder.mutation<DeleteUserDTO, Partial<DeleteUserDTO>>({
       query: (user) => ({
         url: `user`,
@@ -99,18 +66,20 @@ export const dashBoardApi = createApi({
         },
       }),
     }),
-    uploadFile: builder.mutation<FileDto, Partial<CreateFileDto>>({
+    uploadFile: builder.mutation<string, Partial<CreateFileDto>>({
       query: (file) => ({
         url: `files`,
         method: "POST",
         body: {
-          id: file.id,
-          base64: file.base64,
-          expirationDate: file.expirationDate,
+          name:file.name,
+          tags:file.tags,
+          rawData: file.rawData,
+          extension:file.extension,
+          expirationTimeInDay: file.expirationTimeInDay,
         },
       }),
     }),
-      getFiles: builder.query<GetFileDto, string>({
+      getFiles: builder.query<GetFileDto[], string>({
       query: (name) => `dashboard`,
       providesTags: ["Dashboard"],
     }),
