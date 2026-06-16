@@ -1,4 +1,5 @@
 import { useGetFilesQuery } from "~/services/app-service";
+import FileUploadForm from "./file-upload";
 import FileList from "./file-list";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 
@@ -71,14 +72,13 @@ export default function Files() {
               <section className="mt-6 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
                 <div className="space-y-4">
                   <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-                    Add a tag
+                    Upload a file
                   </h2>
-                  //TODO add file :
-                  {/* <AddFile
-                    onTagCreated={() => {
+                  <FileUploadForm
+                    onFileUploaded={() => {
                       refetch();
                     }}
-                  /> */}
+                  />
                 </div>
               </section>
             </>

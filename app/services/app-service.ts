@@ -4,12 +4,12 @@ import type { LoginUserDTO } from "~/dto/user/LoginUserDTO";
 import type { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
 import type { LoggedUserDTO } from "~/dto/user/LoggedUserDTO";
 import type { DeleteUserDTO } from "~/dto/user/DeleteUserDTO";
-import type { CreateFileDto } from "~/dto/file/CreateFileDto";
 import type { GetFileDto } from "~/dto/file/GetFileDto";
 import type { DeleteFileDto } from "~/dto/file/DeleteFileDto";
 import type { DownloadFileDto } from "~/dto/file/DownloadFileDto";
 import type { GetTagDto } from "~/dto/tag/GetTagDto";
 import type { AddTagDto } from "~/dto/tag/AddTagDto";
+import type { CreateFileDto } from "~/dto/file/CreateFileDto";
 
 
 // Define a service using a base URL and expected endpoints
@@ -17,7 +17,7 @@ export const dashBoardApi = createApi({
   reducerPath: "DashBoardApi",
   tagTypes: ["Dashboard"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://back.test/",
+    baseUrl: "http://localhost:3000/",
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       let state = getState() as any; //State saves every reference to other slices of redux states
@@ -66,22 +66,15 @@ export const dashBoardApi = createApi({
         },
       }),
     }),
-    uploadFile: builder.mutation<string, Partial<CreateFileDto>>({
-      query: (file) => ({
-        url: `files`,
+    uploadFile: builder.mutation<string, FormData>({
+      query: (formData) => ({
+        url: `file/upload`,
         method: "POST",
-        body: {
-          name:file.name,
-          tags:file.tags,
-          rawData: file.rawData,
-          extension:file.extension,
-          expirationTimeInDay: file.expirationTimeInDay,
-        },
+        body: formData,
       }),
     }),
       getFiles: builder.query<GetFileDto[], string>({
-      query: (name) => `dashboard`,
-      providesTags: ["Dashboard"],
+      query: (name) => `file/all`,
     }),
     downloadFile: builder.mutation<DownloadFileDto, Partial<DownloadFileDto>>({
       query: (file) => ({
@@ -120,8 +113,6 @@ export const dashBoardApi = createApi({
 // Export hooks for usage in functional components
 export const { usePutLoginMutation } = dashBoardApi;
 export const { usePutRegisterMutation } = dashBoardApi;
-export const { useUpdateUserMutation } = dashBoardApi;
-export const { useUpdateUserPasswordMutation } = dashBoardApi;
 export const { useDeleteUserMutation } = dashBoardApi;
 export const { useUploadFileMutation } = dashBoardApi;
 export const { useGetFilesQuery } = dashBoardApi;

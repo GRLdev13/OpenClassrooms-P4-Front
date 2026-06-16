@@ -4,7 +4,7 @@ export class CreateFileDto {
   constructor(
     public name: string,
     public tags:LinkTagDto[],
-    public rawData: string | null,
+    public rawData: string | FormData | null,
     public extension:string,
     public expirationTimeInDay: number, //numbers of day 1-3-7
   ) {}
