@@ -7,7 +7,7 @@ export class GetFileDto {
     public rawData: Buffer | Buffer<ArrayBufferLike> | null,
     public uploadDate: Date,
     public expirationDate: Date | null,
-    public isFileExpired: boolean,
+    public hasExpired: boolean,
     public tags:LinkTagDto[] = []
   ) {}
 }

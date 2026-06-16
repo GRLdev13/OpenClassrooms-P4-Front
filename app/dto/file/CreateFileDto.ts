@@ -1,13 +1,11 @@
-import type { LinkTagDto, TagDto } from "../tag/TagDto";
+import type { LinkTagDto } from "../tag/TagDto";
 
 export class CreateFileDto {
   constructor(
-    public id: string,
     public name: string,
     public tags:LinkTagDto[],
-    public base64: string | null,
+    public rawData: string | null,
     public extension:string,
-    public uploadDate: Date | null,
     public expirationTimeInDay: number, //numbers of day 1-3-7
   ) {}
 }
