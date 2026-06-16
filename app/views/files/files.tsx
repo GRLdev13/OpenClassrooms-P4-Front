@@ -1,21 +1,12 @@
-import { useState, useEffect } from "react";
-// import type { DashBoardDTO } from "~/DTO/DashboardDTO";
 import { useGetFilesQuery } from "~/services/app-service";
 import FileList from "./file-list";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import type { GetFileDto } from "~/dto/file/GetFileDto";
 
-export default function Dashboards() {
-    const { files, error, isFetching, isLoading, refetch } = useGetFilesQuery(
+export default function Files() {
+  const { data: files = [], error, isFetching, isLoading, refetch } = useGetFilesQuery(
     "dashboard",
     { refetchOnMountOrArgChange: true },
   );
-
-  const [dashboard, setDashboard] = useState<GetFileDto[] | null>(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-zinc-950">
@@ -57,7 +48,6 @@ export default function Dashboards() {
                   <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
                     Your Files
                   </h2>
-
                   {isFetching || isLoading ? (
                     <div className="flex items-center justify-center py-16">
                       <div className="text-center">
@@ -67,19 +57,13 @@ export default function Dashboards() {
                         </p>
                       </div>
                     </div>
-                  ) : files.length > 0 ? (
+                  ) : (
                     <FileList
-                      notes={files}
-                      onNoteDeleted={() => {
+                      files={files}
+                      onFileDeleted={() => {
                         refetch();
                       }}
                     />
-                  ) : (
-                    <div className="rounded-lg border border-dashed border-neutral-200 p-6 text-center dark:border-neutral-700">
-                      <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                        No file available
-                      </p>
-                    </div>
                   )}
                 </div>
               </section>

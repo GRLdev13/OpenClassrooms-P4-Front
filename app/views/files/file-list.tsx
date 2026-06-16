@@ -1,19 +1,29 @@
 import type { GetFileDto } from "~/dto/file/GetFileDto";
-import File
+import File from "./file";
 
-type NotesListProps = {
-  notes: GetFileDto[];
-  onNoteDeleted: () => void;
+type FileListProps = {
+  files: GetFileDto[];
+  onFileDeleted: () => void;
 };
 
-export default function FileList({ notes, onNoteDeleted }: NotesListProps) {
+export default function FileList({ files, onFileDeleted }: FileListProps) {
+  if (files.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-neutral-200 p-6 text-center dark:border-neutral-700">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          No files available.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <ul className="space-y-3">
-      {notes.map((note, index) => (
+      {files.map((file, index) => (
         <File
-          key={note.id ? note.id : index}
-          note={note}
-          onNoteDeleted={onNoteDeleted}
+          key={file.id ? file.id : index}
+          file={file}
+          onFileDeleted={onFileDeleted}
         />
       ))}
     </ul>

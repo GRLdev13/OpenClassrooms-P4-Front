@@ -6,21 +6,21 @@ import ErrorComponent from "~/views/helpers/ErrorsComponent";
 
 type FileProps = {
   file: GetFileDto;
-  onNoteDeleted: () => void;
+  onFileDeleted: () => void;
 };
 
-export default function File({ file, onNoteDeleted }: FileProps) {
+export default function File({ file, onFileDeleted }: FileProps) {
   const [errorMessage, setErrorMessage] = useState("");
-  const [deleteNote, { isLoading }] = useDeleteFileMutation();
+  const [deleteFile, { isLoading }] = useDeleteFileMutation();
 
   const handleDelete = async () => {
     setErrorMessage("");
 
-    const deleteNoteDTO = new DeleteFileDto(file.id);
+    const deleteFileDto = new DeleteFileDto(file.id);
 
     try {
-      await deleteNote(deleteNoteDTO).unwrap();
-      onNoteDeleted();
+      await deleteFile(deleteFileDto).unwrap();
+      onFileDeleted();
     } catch (error) {
       console.log("error:", error);
       setErrorMessage(error as any);
