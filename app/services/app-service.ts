@@ -78,13 +78,13 @@ export const dashBoardApi = createApi({
     }),
     downloadFile: builder.mutation<DownloadFileDto, Partial<DownloadFileDto>>({
       query: (file) => ({
-        url: `files/${file.id}/download`,
+        url: `file/${file.id}/download`,
         method: "GET",
       }),
     }),
     deleteFile: builder.mutation<void, Partial<DeleteFileDto>>({
       query: (file) => ({
-        url: `files/${file.id}`,
+        url: `file/delete/${file.id}`,
         method: "DELETE",
       }),
     }),

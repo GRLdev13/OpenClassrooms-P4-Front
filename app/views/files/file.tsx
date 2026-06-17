@@ -3,14 +3,32 @@ import { DeleteFileDto } from "~/dto/file/DeleteFileDto";
 import { type GetFileDto } from "~/dto/file/GetFileDto";
 import { useDeleteFileMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
+import FileDownload from "./file-download";
 
 type FileProps = {
   file: GetFileDto;
   onFileDeleted: () => void;
 };
 
+function formatFileDate(date: Date | string | null) {
+  if (!date) {
+    return "";
+  }
+
+  return new Date(date).toLocaleDateString();
+}
+
+function formatFileTags(tags: GetFileDto["tags"]) {
+  if (!tags.length) {
+    return "No tags";
+  }
+
+  return tags.map((tag) => tag.id).join(", ");
+}
+
 export default function File({ file, onFileDeleted }: FileProps) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [deleteFile, { isLoading }] = useDeleteFileMutation();
 
   const handleDelete = async () => {
@@ -33,6 +51,10 @@ export default function File({ file, onFileDeleted }: FileProps) {
         <p className="text-sm text-zinc-900 dark:text-white">{file.name}</p>
 
         {/* //handle tags in sub combonent */}
+        <span>
+          {file.name} | {formatFileDate(file.expirationDate)} |{" "}
+          {formatFileTags(file.tags)}
+        </span>
         {/* {file.tag?.name && (
           <small className="mt-2 inline-block text-sm text-zinc-500 dark:text-zinc-400">
             Tag:{" "}
@@ -43,14 +65,28 @@ export default function File({ file, onFileDeleted }: FileProps) {
         )} */}
         {errorMessage && <ErrorComponent error={errorMessage} />}
       </div>
-      <button
-        type="button"
-        onClick={handleDelete}
-        disabled={isLoading}
-        className="shrink-0 text-sm font-medium text-red-500 transition hover:text-red-600 disabled:cursor-not-allowed disabled:text-neutral-400"
-      >
-        {isLoading ? "Deleting..." : "Delete"}
-      </button>
+      <div className="flex shrink-0 items-center gap-3">
+        <button
+          type="button"
+          onClick={() => setIsDownloadOpen(true)}
+          className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
+        >
+          Download
+        </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isLoading}
+          className="text-sm font-medium text-red-500 transition hover:text-red-600 disabled:cursor-not-allowed disabled:text-neutral-400"
+        >
+          {isLoading ? "Deleting..." : "Delete"}
+        </button>
+      </div>
+      <FileDownload
+        file={file}
+        visible={isDownloadOpen}
+        onHide={() => setIsDownloadOpen(false)}
+      />
     </li>
   );
 }
