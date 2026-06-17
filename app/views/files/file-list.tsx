@@ -1,4 +1,4 @@
-import type { GetFileDto } from "~/dto/file/GetFileDto";
+import { GetFileDto } from "~/dto/file/GetFileDto";
 import File from "./file";
 
 type FileListProps = {
@@ -6,8 +6,40 @@ type FileListProps = {
   onFileDeleted: () => void;
 };
 
+const fakeFiles: GetFileDto[] = [
+  new GetFileDto(
+    "fake-file-1",
+    "project-brief.pdf",
+    null,
+    new Date("2026-06-12"),
+    new Date("2026-06-19"),
+    false,
+    [{ id: "documents" }],
+  ),
+  new GetFileDto(
+    "fake-file-2",
+    "budget-forecast.xlsx",
+    null,
+    new Date("2026-06-14"),
+    new Date("2026-06-21"),
+    false,
+    [{ id: "finance" }],
+  ),
+  new GetFileDto(
+    "fake-file-3",
+    "expired-contract.docx",
+    null,
+    new Date("2026-05-28"),
+    new Date("2026-06-10"),
+    true,
+    [{ id: "legal" }],
+  ),
+];
+
 export default function FileList({ files, onFileDeleted }: FileListProps) {
-  if (files.length === 0) {
+  const filesToDisplay = [...fakeFiles, ...files];
+
+  if (filesToDisplay.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-neutral-200 p-6 text-center dark:border-neutral-700">
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -19,7 +51,7 @@ export default function FileList({ files, onFileDeleted }: FileListProps) {
 
   return (
     <ul className="space-y-3">
-      {files.map((file, index) => (
+      {filesToDisplay.map((file, index) => (
         <File
           key={file.id ? file.id : index}
           file={file}
