@@ -41,7 +41,7 @@ export default function FileDownload({
   const handleDownload = async () => {
     try {
       const blob = await downloadFile(
-        new DownloadFileDto(file.id, file.fileHasPassword ? password : null),
+        new DownloadFileDto(file.id, password ? password : null),
       ).unwrap();
       downloadBlob(file.name, blob);
       handleHide();
@@ -63,7 +63,7 @@ export default function FileDownload({
           Download {file.name}?
         </p>
 
-        {file.fileHasPassword && (
+        {file.hasPassword && (
           <div>
             <label
               htmlFor={`download-password-${file.id}`}
@@ -99,7 +99,7 @@ export default function FileDownload({
             type="button"
             onClick={handleDownload}
             disabled={
-              isLoading || (file.fileHasPassword && password.trim() === "")
+              isLoading || (file.hasPassword && password.trim() === "")
             }
             className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
           >

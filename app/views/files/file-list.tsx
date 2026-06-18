@@ -35,6 +35,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-06-10"),
     true,
     [{ id: "legal" }],
+    false
   ),
 ];
 
