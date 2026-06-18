@@ -76,10 +76,11 @@ export const dashBoardApi = createApi({
       getFiles: builder.query<GetFileDto[], string>({
       query: (name) => `file/all`,
     }),
-    downloadFile: builder.mutation<DownloadFileDto, Partial<DownloadFileDto>>({
+    downloadFile: builder.mutation<Blob, Pick<DownloadFileDto, "id">>({
       query: (file) => ({
-        url: `file/${file.id}/download`,
+        url: `file/${file.id}`,
         method: "GET",
+        responseHandler: (response) => response.blob(),
       }),
     }),
     deleteFile: builder.mutation<void, Partial<DeleteFileDto>>({

@@ -19,7 +19,7 @@ export default function Files() {
                 Dashboard
               </h1>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                Manage your notes and tags.
+                Manage your files and tags.
               </p>
             </div>
           </header>

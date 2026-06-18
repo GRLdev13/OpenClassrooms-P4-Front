@@ -19,7 +19,7 @@ function formatFileDate(date: Date | string | null) {
 }
 
 function formatFileTags(tags: GetFileDto["tags"]) {
-  if (!tags.length) {
+  if (!tags || !tags.length) {
     return "No tags";
   }
 

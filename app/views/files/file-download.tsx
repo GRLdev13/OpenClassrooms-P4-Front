@@ -10,8 +10,7 @@ type FileDownloadProps = {
   onHide: () => void;
 };
 
-function downloadBlob(fileName: string, data: BlobPart) {
-  const blob = data instanceof Blob ? data : new Blob([data]);
+function downloadBlob(fileName: string, blob: Blob) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
 
@@ -20,46 +19,7 @@ function downloadBlob(fileName: string, data: BlobPart) {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
-}
-
-function getRawDownloadData(downloadedFile: DownloadFileDto): BlobPart | null {
-  const rawData: unknown = downloadedFile.rawData;
-
-  if (!rawData) {
-    return null;
-  }
-
-  if (rawData instanceof Blob) {
-    return rawData;
-  }
-
-  if (rawData instanceof ArrayBuffer) {
-    return rawData;
-  }
-
-  if (ArrayBuffer.isView(rawData)) {
-    const buffer = new ArrayBuffer(rawData.byteLength);
-    new Uint8Array(buffer).set(
-      new Uint8Array(rawData.buffer, rawData.byteOffset, rawData.byteLength),
-    );
-
-    return new Uint8Array(buffer);
-  }
-
-  if (Array.isArray(rawData)) {
-    return new Uint8Array(rawData);
-  }
-
-  if (
-    typeof rawData === "object" &&
-    "data" in rawData &&
-    Array.isArray((rawData as { data?: unknown }).data)
-  ) {
-    return new Uint8Array((rawData as { data: number[] }).data);
-  }
-
-  return null;
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 export default function FileDownload({
@@ -71,15 +31,10 @@ export default function FileDownload({
 
   const handleDownload = async () => {
     try {
-      const downloadedFile = await downloadFile(
+      const blob = await downloadFile(
         new DownloadFileDto(file.id, null, null),
       ).unwrap();
-      const rawData = getRawDownloadData(downloadedFile);
-
-      if (rawData) {
-        downloadBlob(file.name, rawData);
-      }
-
+      downloadBlob(file.name, blob);
       onHide();
     } catch (downloadError) {
       console.log("error:", downloadError);
