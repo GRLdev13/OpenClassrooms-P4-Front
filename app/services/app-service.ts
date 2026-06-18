@@ -76,11 +76,27 @@ export const dashBoardApi = createApi({
       getFiles: builder.query<GetFileDto[], string>({
       query: (name) => `file/all`,
     }),
-    downloadFile: builder.mutation<Blob, Pick<DownloadFileDto, "id">>({
+    downloadFile: builder.mutation<
+      Blob,
+      Pick<DownloadFileDto, "id" | "password">
+    >({
       query: (file) => ({
         url: `file/${file.id}`,
         method: "GET",
-        responseHandler: (response) => response.blob(),
+        params: file.password ? { password: file.password } : undefined,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.blob();
+          }
+
+          const contentType = response.headers.get("content-type");
+
+          if (contentType?.includes("application/json")) {
+            return response.json();
+          }
+
+          return response.text();
+        },
       }),
     }),
     deleteFile: builder.mutation<void, Partial<DeleteFileDto>>({

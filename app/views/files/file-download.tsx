@@ -1,4 +1,5 @@
 import { Dialog } from "primereact/dialog";
+import { useState } from "react";
 import { DownloadFileDto } from "~/dto/file/DownloadFileDto";
 import type { GetFileDto } from "~/dto/file/GetFileDto";
 import { useDownloadFileMutation } from "~/services/app-service";
@@ -27,15 +28,23 @@ export default function FileDownload({
   visible,
   onHide,
 }: FileDownloadProps) {
-  const [downloadFile, { isLoading, error }] = useDownloadFileMutation();
+  const [password, setPassword] = useState("");
+  const [downloadFile, { isLoading, error, reset }] =
+    useDownloadFileMutation();
+
+  const handleHide = () => {
+    setPassword("");
+    reset();
+    onHide();
+  };
 
   const handleDownload = async () => {
     try {
       const blob = await downloadFile(
-        new DownloadFileDto(file.id, null, null),
+        new DownloadFileDto(file.id, file.fileHasPassword ? password : null),
       ).unwrap();
       downloadBlob(file.name, blob);
-      onHide();
+      handleHide();
     } catch (downloadError) {
       console.log("error:", downloadError);
     }
@@ -45,7 +54,7 @@ export default function FileDownload({
     <Dialog
       header="Download file"
       visible={visible}
-      onHide={onHide}
+      onHide={handleHide}
       className="w-[90vw] max-w-md"
       modal
     >
@@ -54,12 +63,34 @@ export default function FileDownload({
           Download {file.name}?
         </p>
 
-        {error && <ErrorComponent error={error as any} />}
+        {file.fileHasPassword && (
+          <div>
+            <label
+              htmlFor={`download-password-${file.id}`}
+              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+            >
+              Password
+            </label>
+            <input
+              id={`download-password-${file.id}`}
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete="current-password"
+              placeholder="Enter the file password"
+              required
+              autoFocus
+              className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+            />
+          </div>
+        )}
+
+        {error && <ErrorComponent error={error} />}
 
         <div className="flex justify-end gap-2">
           <button
             type="button"
-            onClick={onHide}
+            onClick={handleHide}
             className="rounded border border-neutral-200 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-neutral-50 dark:border-neutral-700 dark:text-zinc-200 dark:hover:bg-neutral-800"
           >
             Cancel
@@ -67,7 +98,9 @@ export default function FileDownload({
           <button
             type="button"
             onClick={handleDownload}
-            disabled={isLoading}
+            disabled={
+              isLoading || (file.fileHasPassword && password.trim() === "")
+            }
             className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
           >
             {isLoading ? "Downloading..." : "Download"}

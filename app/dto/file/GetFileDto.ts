@@ -8,6 +8,7 @@ export class GetFileDto {
     public uploadDate: Date,
     public expirationDate: Date | null,
     public hasExpired: boolean,
-    public tags:LinkTagDto[] = []
+    public tags: LinkTagDto[] = [],
+    public fileHasPassword: boolean = false,
   ) {}
 }

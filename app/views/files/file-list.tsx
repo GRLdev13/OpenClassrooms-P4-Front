@@ -15,6 +15,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-06-19"),
     false,
     [{ id: "documents" }],
+    true,
   ),
   new GetFileDto(
     "fake-file-2",
@@ -24,6 +25,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-06-21"),
     false,
     [{ id: "finance" }],
+    true,
   ),
   new GetFileDto(
     "fake-file-3",

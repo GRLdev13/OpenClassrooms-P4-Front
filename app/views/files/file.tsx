@@ -48,7 +48,30 @@ export default function File({ file, onFileDeleted }: FileProps) {
   return (
     <li className="flex items-start justify-between gap-4 rounded-lg border border-neutral-200 p-3 transition hover:shadow-sm dark:border-neutral-700">
       <div className="min-w-0">
-        <p className="text-sm text-zinc-900 dark:text-white">{file.name}</p>
+        <p className="flex items-center gap-1.5 text-sm text-zinc-900 dark:text-white">
+          {file.fileHasPassword && (
+            <span
+              className="text-amber-600 dark:text-amber-400"
+              title="Password protected"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-4"
+                aria-hidden="true"
+              >
+                <rect width="18" height="11" x="3" y="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span className="sr-only">Password protected</span>
+            </span>
+          )}
+          {file.name}
+        </p>
 
         {/* //handle tags in sub combonent */}
         <span>
