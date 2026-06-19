@@ -49,7 +49,8 @@ export default function File({ file, onFileDeleted }: FileProps) {
     <li className="flex items-start justify-between gap-4 rounded-lg border border-neutral-200 p-3 transition hover:shadow-sm dark:border-neutral-700">
       <div className="min-w-0">
         <p className="flex items-center gap-1.5 text-sm text-zinc-900 dark:text-white">
-          {file.fileHasPassword && (
+          {/* //TODO font awesome or something */}
+          {file.hasPassword && (
             <span
               className="text-amber-600 dark:text-amber-400"
               title="Password protected"

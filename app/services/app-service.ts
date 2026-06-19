@@ -11,7 +11,6 @@ import type { GetTagDto } from "~/dto/tag/GetTagDto";
 import type { AddTagDto } from "~/dto/tag/AddTagDto";
 import type { CreateFileDto } from "~/dto/file/CreateFileDto";
 
-
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({
   reducerPath: "DashBoardApi",
@@ -26,15 +25,18 @@ export const dashBoardApi = createApi({
         "Authorization",
         `Bearer ${state?.user?.token ? state?.user?.token : lToken}`,
       );
-      console.log("token set ?", state?.user?.token ? state?.user?.token : lToken);
-      //TODO: XSRF token + laravel token
+      console.log(
+        "token set ?",
+        state?.user?.token ? state?.user?.token : lToken,
+      );
+      //TODO: XSRF token + token
     },
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     putRegister: builder.mutation<RegisterUserDTO, Partial<RegisterUserDTO>>({
       query: (user) => ({
-        url: `register`,
+        url: `/user/register`,
         method: "POST",
         body: {
           firstName: user.firstName,
@@ -47,7 +49,7 @@ export const dashBoardApi = createApi({
     }),
     putLogin: builder.mutation<LoggedUserDTO, Partial<LoginUserDTO>>({
       query: (user) => ({
-        url: `login`,
+        url: `/user/login`,
         method: "POST",
         body: {
           email: user.email,
@@ -73,8 +75,14 @@ export const dashBoardApi = createApi({
         body: formData,
       }),
     }),
-      getFiles: builder.query<GetFileDto[], string>({
+    getFiles: builder.query<GetFileDto[], string>({
       query: (name) => `file/all`,
+    }),
+    downloadFileLink: builder.mutation<GetFileDto, string>({
+      query: (link) => ({
+        url: `file/${link}`,
+        method: "GET",
+      }),
     }),
     downloadFile: builder.mutation<Blob, DownloadFileDto>({
       query: (file) => ({
@@ -133,5 +141,6 @@ export const { usePutRegisterMutation } = dashBoardApi;
 export const { useDeleteUserMutation } = dashBoardApi;
 export const { useUploadFileMutation } = dashBoardApi;
 export const { useGetFilesQuery } = dashBoardApi;
+export const { useDownloadFileLinkMutation } = dashBoardApi;
 export const { useDownloadFileMutation } = dashBoardApi;
 export const { useDeleteFileMutation } = dashBoardApi;

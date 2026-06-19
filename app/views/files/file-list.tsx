@@ -10,7 +10,6 @@ const fakeFiles: GetFileDto[] = [
   new GetFileDto(
     "fake-file-1",
     "project-brief.pdf",
-    null,
     new Date("2026-06-12"),
     new Date("2026-06-19"),
     false,
@@ -20,7 +19,6 @@ const fakeFiles: GetFileDto[] = [
   new GetFileDto(
     "fake-file-2",
     "budget-forecast.xlsx",
-    null,
     new Date("2026-06-14"),
     new Date("2026-06-21"),
     false,
@@ -30,7 +28,6 @@ const fakeFiles: GetFileDto[] = [
   new GetFileDto(
     "fake-file-3",
     "expired-contract.docx",
-    null,
     new Date("2026-05-28"),
     new Date("2026-06-10"),
     true,
