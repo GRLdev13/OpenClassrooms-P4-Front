@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
-import { useUploadFileMutation } from "~/services/app-service";
+import { MultiSelect } from "primereact/multiselect";
+import {
+  useGetTagsQuery,
+  useUploadFileMutation,
+} from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import { CreateFileDto } from "~/dto/file/CreateFileDto";
+import type { GetTagDto } from "~/dto/tag/GetTagDto";
+import { LinkTagDto } from "~/dto/tag/LinkTagDto";
 
 type FileUploadFormProps = {
   onFileUploaded: () => void;
@@ -31,9 +37,54 @@ export default function FileUploadForm({
 }: FileUploadFormProps) {
   const [filePassword, setFilePassword] = useState("");
   const [expirationTimeInDay, setExpirationTimeInDay] = useState(1);
+  const [selectedTags, setSelectedTags] = useState<GetTagDto[]>([]);
+  const [customTags, setCustomTags] = useState<GetTagDto[]>([]);
+  const [newTagName, setNewTagName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [uploadFile, { isLoading }] = useUploadFileMutation();
+  const {
+    data: tags = [],
+    error: tagsError,
+    isLoading: areTagsLoading,
+  } = useGetTagsQuery();
+  const tagOptions = [...tags, ...customTags];
+
+  const handleAddTag = () => {
+    const name = newTagName.trim();
+
+    if (!name) {
+      return;
+    }
+
+    const existingTag = tagOptions.find(
+      (tag) => tag.name.toLocaleLowerCase() === name.toLocaleLowerCase(),
+    );
+
+    if (existingTag) {
+      if (!selectedTags.some((tag) => tag.name === existingTag.name)) {
+        setSelectedTags((currentTags) => [...currentTags, existingTag]);
+      }
+    } else {
+      const customTag = {
+        id: `custom-${crypto.randomUUID()}`,
+        name,
+      };
+
+      setCustomTags((currentTags) => [...currentTags, customTag]);
+      setSelectedTags((currentTags) => [...currentTags, customTag]);
+    }
+
+    setNewTagName("");
+  };
+
+  const handleNewTagKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleAddTag();
+    }
+  };
 
   const handleUpload = async (event: UploadHandlerEvent) => {
     const file = event.files[0];
@@ -49,7 +100,7 @@ export default function FileUploadForm({
     try {
       const createFileDto = new CreateFileDto(
         file.name,
-        [],
+        selectedTags.map((tag) => new LinkTagDto(tag.name)),
         null,
         getFileExtension(file.name),
         filePassword.trim() || null,
@@ -74,6 +125,9 @@ export default function FileUploadForm({
 
       event.options.clear();
       setFilePassword("");
+      setSelectedTags([]);
+      setCustomTags([]);
+      setNewTagName("");
       setSuccessMessage("File uploaded successfully.");
       onFileUploaded();
     } catch (error) {
@@ -94,6 +148,54 @@ export default function FileUploadForm({
         onChange={(event) => setExpirationTimeInDay(event.value)}
         placeholder="Select expiration"
       />
+
+      <div>
+        <label
+          htmlFor="file-tags"
+          className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Tags
+        </label>
+        <MultiSelect
+          inputId="file-tags"
+          className="w-full"
+          value={selectedTags}
+          options={tagOptions}
+          optionLabel="name"
+          dataKey="id"
+          onChange={(event) => setSelectedTags(event.value)}
+          placeholder={areTagsLoading ? "Loading tags..." : "Select tags"}
+          display="chip"
+          filter
+          disabled={isLoading || areTagsLoading}
+          emptyMessage="No tags available"
+          panelFooterTemplate={
+            <div
+              className="flex gap-2 border-t border-neutral-200 p-3 dark:border-neutral-700"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <input
+                type="text"
+                value={newTagName}
+                onChange={(event) => setNewTagName(event.target.value)}
+                onKeyDown={handleNewTagKeyDown}
+                placeholder="Create a new tag"
+                aria-label="New tag name"
+                className="min-w-0 flex-1 rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+              />
+              <button
+                type="button"
+                onClick={handleAddTag}
+                disabled={newTagName.trim() === ""}
+                className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
+              >
+                Add
+              </button>
+            </div>
+          }
+        />
+        {tagsError && <ErrorComponent error={tagsError} />}
+      </div>
 
       <div>
         <label

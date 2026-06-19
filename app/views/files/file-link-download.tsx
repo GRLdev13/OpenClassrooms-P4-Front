@@ -32,7 +32,7 @@ function formatTags(tags: GetFileDto["tags"]) {
     return "No tags";
   }
 
-  return tags.map((tag) => tag.id).join(", ");
+  return tags.map((tag) => tag.name).join(", ");
 }
 
 export default function FileLinkDownload() {

@@ -123,7 +123,7 @@ export const dashBoardApi = createApi({
       }),
     }),
     getTags: builder.query<GetTagDto[], void>({
-      query: () => `tags`,
+      query: () => `tag/all`,
       providesTags: ["Dashboard"],
     }),
     deleteTag: builder.mutation<void, string>({
@@ -144,3 +144,4 @@ export const { useGetFilesQuery } = dashBoardApi;
 export const { useDownloadFileLinkMutation } = dashBoardApi;
 export const { useDownloadFileMutation } = dashBoardApi;
 export const { useDeleteFileMutation } = dashBoardApi;
+export const { useGetTagsQuery } = dashBoardApi;

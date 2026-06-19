@@ -1,5 +1,5 @@
 export class LinkTagDto {
   constructor(
-    public id: string,
+    public name: string,
   ) {}
 }

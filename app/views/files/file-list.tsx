@@ -13,7 +13,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-06-12"),
     new Date("2026-06-19"),
     false,
-    [{ id: "documents" }],
+    [{ name: "documents" }],
     true,
   ),
   new GetFileDto(
@@ -22,7 +22,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-06-14"),
     new Date("2026-06-21"),
     false,
-    [{ id: "finance" }],
+    [{ name: "finance" }],
     true,
   ),
   new GetFileDto(
@@ -31,7 +31,7 @@ const fakeFiles: GetFileDto[] = [
     new Date("2026-05-28"),
     new Date("2026-06-10"),
     true,
-    [{ id: "legal" }],
+    [{ name: "legal" }],
     false
   ),
 ];
