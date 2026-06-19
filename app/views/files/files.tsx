@@ -1,6 +1,7 @@
 import { useGetFilesQuery } from "~/services/app-service";
 import FileUploadForm from "./file-upload";
 import FileList from "./file-list";
+import FileLinkDownload from "./file-link-download";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 
 export default function Files() {
@@ -28,6 +29,21 @@ export default function Files() {
             <ErrorComponent error={error} />
           ) : (
             <>
+              <section className="mt-6 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                      Download from a link
+                    </h2>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      Enter a shared file link to view its details and download
+                      it.
+                    </p>
+                  </div>
+                  <FileLinkDownload />
+                </div>
+              </section>
+
               <section className="mt-6 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
                 <div className="space-y-4">
                   {/* {files?.tags && files.tags.length > 0 ? (

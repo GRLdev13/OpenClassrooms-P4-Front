@@ -4,6 +4,7 @@ import { type GetFileDto } from "~/dto/file/GetFileDto";
 import { useDeleteFileMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import FileDownload from "./file-download";
+import FileLinkPopup from "./file-link-popup";
 
 type FileProps = {
   file: GetFileDto;
@@ -29,6 +30,7 @@ function formatFileTags(tags: GetFileDto["tags"]) {
 export default function File({ file, onFileDeleted }: FileProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+  const [isLinkPopupOpen, setIsLinkPopupOpen] = useState(false);
   const [deleteFile, { isLoading }] = useDeleteFileMutation();
 
   const handleDelete = async () => {
@@ -92,6 +94,14 @@ export default function File({ file, onFileDeleted }: FileProps) {
       <div className="flex shrink-0 items-center gap-3">
         <button
           type="button"
+          onClick={() => setIsLinkPopupOpen(true)}
+          disabled={!file.link}
+          className="text-sm font-medium text-blue-600 transition hover:text-blue-700 disabled:cursor-not-allowed disabled:text-neutral-400"
+        >
+          View link
+        </button>
+        <button
+          type="button"
           onClick={() => setIsDownloadOpen(true)}
           className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
         >
@@ -110,6 +120,11 @@ export default function File({ file, onFileDeleted }: FileProps) {
         file={file}
         visible={isDownloadOpen}
         onHide={() => setIsDownloadOpen(false)}
+      />
+      <FileLinkPopup
+        file={file}
+        visible={isLinkPopupOpen}
+        onHide={() => setIsLinkPopupOpen(false)}
       />
     </li>
   );

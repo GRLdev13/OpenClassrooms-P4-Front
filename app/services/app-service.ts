@@ -80,7 +80,7 @@ export const dashBoardApi = createApi({
     }),
     downloadFileLink: builder.mutation<GetFileDto, string>({
       query: (link) => ({
-        url: `file/${link}`,
+        url: `file/link/${link}`,
         method: "GET",
       }),
     }),
