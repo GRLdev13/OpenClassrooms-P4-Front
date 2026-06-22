@@ -3,10 +3,29 @@ import FileUploadForm from "./file-upload";
 import FileList from "./file-list";
 import FileLinkDownload from "./file-link-download";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
+import type { RequestFilesDto } from "~/dto/file/RequestFilesDto";
+import { useNavigate } from "react-router";
 
 export default function Files() {
-  const { data: files = [], error, isFetching, isLoading, refetch } = useGetFilesQuery(
-    "dashboard",
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login", { replace: true });
+  };
+
+  const {
+    data: files = [],
+    error,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useGetFilesQuery(
+    {
+      id: localStorage.getItem("id"),
+      email: localStorage.getItem("email"),
+      token: localStorage.getItem("token"),
+    } as RequestFilesDto,
     { refetchOnMountOrArgChange: true },
   );
 
@@ -23,6 +42,13 @@ export default function Files() {
                 Manage your files and tags.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-300 px-4 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            >
+              Log out
+            </button>
           </header>
 
           {error ? (

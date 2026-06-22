@@ -24,7 +24,9 @@ function formatFileTags(tags: GetFileDto["tags"]) {
     return "No tags";
   }
 
-  return tags.map((tag) => tag.name).join(", ");
+  let toto = tags.map((tag) => tag.name).join(", ");
+  console.log(toto);
+  return toto;
 }
 
 export default function File({ file, onFileDeleted }: FileProps) {

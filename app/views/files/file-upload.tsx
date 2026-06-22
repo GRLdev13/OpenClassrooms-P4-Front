@@ -2,10 +2,7 @@ import { useState, type KeyboardEvent } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
 import { MultiSelect } from "primereact/multiselect";
-import {
-  useGetTagsQuery,
-  useUploadFileMutation,
-} from "~/services/app-service";
+import { useGetTagsQuery, useUploadFileMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import { CreateFileDto } from "~/dto/file/CreateFileDto";
 import type { GetTagDto } from "~/dto/tag/GetTagDto";
@@ -74,6 +71,9 @@ export default function FileUploadForm({
       setCustomTags((currentTags) => [...currentTags, customTag]);
       setSelectedTags((currentTags) => [...currentTags, customTag]);
     }
+    console.log("customTags", customTags);
+    console.log("newTagName", newTagName);
+    console.log("selectedTags", selectedTags);
 
     setNewTagName("");
   };
@@ -120,6 +120,7 @@ export default function FileUploadForm({
       if (createFileDto.password) {
         formData.append("password", createFileDto.password);
       }
+      formData.append("email", localStorage.getItem("email") ?? "");
 
       await uploadFile(formData).unwrap();
 

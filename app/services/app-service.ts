@@ -9,7 +9,7 @@ import type { DeleteFileDto } from "~/dto/file/DeleteFileDto";
 import type { DownloadFileDto } from "~/dto/file/DownloadFileDto";
 import type { GetTagDto } from "~/dto/tag/GetTagDto";
 import type { AddTagDto } from "~/dto/tag/AddTagDto";
-import type { CreateFileDto } from "~/dto/file/CreateFileDto";
+import type { RequestFilesDto } from "~/dto/file/RequestFilesDto";
 
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({
@@ -75,8 +75,12 @@ export const dashBoardApi = createApi({
         body: formData,
       }),
     }),
-    getFiles: builder.query<GetFileDto[], string>({
-      query: (name) => `file/all`,
+    getFiles: builder.query<GetFileDto[], RequestFilesDto>({
+        query: (query) => ({
+        url: `file`,
+        method: "POST",
+        body: query,
+      }),
     }),
     downloadFileLink: builder.mutation<GetFileDto, string>({
       query: (link) => ({

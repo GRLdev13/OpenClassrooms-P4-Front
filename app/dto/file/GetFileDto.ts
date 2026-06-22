@@ -1,4 +1,4 @@
-import { LinkTagDto } from "../tag/TagDto";
+import { GetTagDto, LinkTagDto } from "../tag/TagDto";
 
 export class GetFileDto {
   constructor(
@@ -7,14 +7,8 @@ export class GetFileDto {
     public uploadDate: Date,
     public expirationDate: Date | null,
     public hasExpired: boolean,
-    public tags: LinkTagDto[] = [],
+    public tags: GetTagDto[] = [],
     public hasPassword: boolean,
     public link: string | null = null,
-  ) {}
-}
-
-  export class GetFileLinkDto {
-  constructor(
-    public link: string,
   ) {}
 }

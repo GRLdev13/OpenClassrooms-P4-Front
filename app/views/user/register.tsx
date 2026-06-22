@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { RegisterUserDTO } from "~/app/dto/UserDTO";
+import { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import { usePutRegisterMutation } from "~/services/app-service";
-import { setUser } from "~/stores/userSlice";
+// import { setUser } from "~/stores/userSlice";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -31,7 +31,7 @@ export default function Register() {
 
     try {
       const response = await putUser(userDTO).unwrap();
-      dispatch(setUser({ email: response.email, firstName: response.firstName, lastName: response.lastName }));
+      // dispatch(setUser({ email: response.email, firstName: response.firstName, lastName: response.lastName }));
       navigate("/login");
     } catch (error) {}
   };
