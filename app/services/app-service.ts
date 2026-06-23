@@ -34,9 +34,9 @@ export const dashBoardApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    putRegister: builder.mutation<RegisterUserDTO, Partial<RegisterUserDTO>>({
-      query: (user) => ({
-        url: `/user/register`,
+    putRegister: builder.mutation<LoggedUserDTO, Partial<RegisterUserDTO>>({
+    query: (user) => ({
+        url: `/auth/register`,
         method: "POST",
         body: {
           firstName: user.firstName,

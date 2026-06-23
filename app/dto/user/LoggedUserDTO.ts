@@ -4,7 +4,6 @@ export class LoggedUserDTO extends Authentification {
   firstName: string = "";
   lastName: string = "";
   token: string = "";
-  id: string = "";
 
   constructor(data: Partial<LoggedUserDTO> = {}) {
     super();
@@ -13,6 +12,5 @@ export class LoggedUserDTO extends Authentification {
     this.email = data.email || "";
     this.password = data.password || "";
     this.token = data.token || "";
-    this.id = data.id || "";
   }
 }
