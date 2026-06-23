@@ -1,11 +1,9 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
 import { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import { usePutRegisterMutation } from "~/services/app-service";
-// import { setUser } from "~/stores/userSlice";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -16,7 +14,6 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [putUser, { error, isLoading }] = usePutRegisterMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,92 +26,91 @@ export default function Register() {
       passwordConfirmation: confirmPassword,
     });
 
+
     try {
-      const response = await putUser(userDTO).unwrap();
-      // dispatch(setUser({ email: response.email, firstName: response.firstName, lastName: response.lastName }));
+      if(await putUser(userDTO).unwrap())
+      {
+
+      }
+      else
+      {
+        //todo exception or something
+        // throw new Exception("tutu");
+      }
       navigate("/login");
     } catch (error) {}
   };
 
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-6 bg-white p-6 dark:bg-zinc-950 md:p-10">
-      <div className="flex w-full max-w-sm flex-col gap-2">
-        <Link to="/" className="flex flex-col items-center gap-2 font-medium">
-          <span className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 42"
-              className="size-9 fill-current text-black dark:text-white"
-            >
-              <text
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                dominantBaseline="central"
-                fontFamily="Arial, sans-serif"
-                fontSize="28"
-                fill="currentColor"
-              >
-                R
-              </text>
-            </svg>
-          </span>
-          <span className="sr-only">Renote</span>
+    <main className="flex min-h-svh flex-col bg-gradient-to-b from-[#ffb382] via-[#f58c78] to-[#e96368] font-sans text-zinc-900">
+      <header className="flex items-center justify-between px-6 py-4 sm:px-12 lg:px-[6.5%]">
+        <Link
+          to="/"
+          className="text-xl font-bold tracking-tight text-black transition-opacity hover:opacity-70"
+        >
+          DataShare
         </Link>
+        <Link
+          to="/login"
+          className="rounded-md bg-[#292929] px-4 py-2 text-xs text-white shadow-sm transition-colors hover:bg-black"
+        >
+          Se connecter
+        </Link>
+      </header>
 
-        <div className="flex flex-col gap-6">
-          <div className="flex w-full flex-col text-center">
-            <h1 className="text-2xl font-medium text-zinc-800 dark:text-white">
-              Create an account
-            </h1>
-            <p className="text-sm text-zinc-500 dark:text-white/70">
-              Enter your details below to create your account
-            </p>
-          </div>
+      <section className="flex flex-1 items-center justify-center px-5 py-10">
+        <div className="w-full max-w-[590px] rounded-xl bg-white px-5 py-7 shadow-[0_3px_10px_rgba(44,26,23,0.28)] sm:px-6">
+          <h1 className="mb-7 text-center text-xl font-bold">
+            Créer un compte
+          </h1>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="block min-w-0">
-              <label
-                htmlFor="firstName"
-                className="mb-3 inline-flex items-center text-sm font-medium text-zinc-800 dark:text-white"
-              >
-                First Name
-              </label>
-              <input
-                id="firstName"
-                type="text"
-                value={firstName}
-                onChange={(event) => setFirstName(event.target.value)}
-                required
-                autoComplete="given-name"
-                className="block h-10 w-full appearance-none rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 py-2 text-base leading-[1.375rem] text-zinc-700 shadow-xs placeholder-zinc-400 disabled:text-zinc-500 disabled:placeholder-zinc-400/70 dark:border-white/10 dark:bg-white/10 dark:text-zinc-300 dark:placeholder-zinc-400 dark:shadow-none sm:text-sm"
-              />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="mb-2 block text-xs text-zinc-800"
+                >
+                  Prénom
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
+                  required
+                  autoComplete="given-name"
+                  placeholder="Saisissez votre prénom..."
+                  className="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-800 outline-none transition placeholder:text-zinc-400 focus:border-[#ee8a5b] focus:ring-2 focus:ring-[#ee8a5b]/20"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="mb-2 block text-xs text-zinc-800"
+                >
+                  Nom
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
+                  required
+                  autoComplete="family-name"
+                  placeholder="Saisissez votre nom..."
+                  className="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-800 outline-none transition placeholder:text-zinc-400 focus:border-[#ee8a5b] focus:ring-2 focus:ring-[#ee8a5b]/20"
+                />
+              </div>
             </div>
 
-            <div className="block min-w-0">
-              <label
-                htmlFor="lastName"
-                className="mb-3 inline-flex items-center text-sm font-medium text-zinc-800 dark:text-white"
-              >
-                Last Name
-              </label>
-              <input
-                id="lastName"
-                type="text"
-                value={lastName}
-                onChange={(event) => setLastName(event.target.value)}
-                required
-                autoComplete="family-name"
-                className="block h-10 w-full appearance-none rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 py-2 text-base leading-[1.375rem] text-zinc-700 shadow-xs placeholder-zinc-400 disabled:text-zinc-500 disabled:placeholder-zinc-400/70 dark:border-white/10 dark:bg-white/10 dark:text-zinc-300 dark:placeholder-zinc-400 dark:shadow-none sm:text-sm"
-              />
-            </div>
-
-            <div className="block min-w-0">
+            <div>
               <label
                 htmlFor="email"
-                className="mb-3 inline-flex items-center text-sm font-medium text-zinc-800 dark:text-white"
+                className="mb-2 block text-xs text-zinc-800"
               >
-                Email address
+                Email
               </label>
               <input
                 id="email"
@@ -123,19 +119,19 @@ export default function Register() {
                 onChange={(event) => setEmail(event.target.value)}
                 required
                 autoComplete="email"
-                placeholder="email@example.com"
-                className="block h-10 w-full appearance-none rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 py-2 text-base leading-[1.375rem] text-zinc-700 shadow-xs placeholder-zinc-400 disabled:text-zinc-500 disabled:placeholder-zinc-400/70 dark:border-white/10 dark:bg-white/10 dark:text-zinc-300 dark:placeholder-zinc-400 dark:shadow-none sm:text-sm"
+                placeholder="Saisissez votre email..."
+                className="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-800 outline-none transition placeholder:text-zinc-400 focus:border-[#ee8a5b] focus:ring-2 focus:ring-[#ee8a5b]/20"
               />
             </div>
 
-            <div className="block min-w-0">
+            <div>
               <label
                 htmlFor="password"
-                className="mb-3 inline-flex items-center text-sm font-medium text-zinc-800 dark:text-white"
+                className="mb-2 block text-xs text-zinc-800"
               >
-                Password
+                Mot de passe
               </label>
-              <div className="relative block w-full">
+              <div className="relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -143,58 +139,60 @@ export default function Register() {
                   onChange={(event) => setPassword(event.target.value)}
                   required
                   autoComplete="new-password"
-                  placeholder="Password"
-                  className="block h-10 w-full appearance-none rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white py-2 pe-10 ps-3 text-base leading-[1.375rem] text-zinc-700 shadow-xs placeholder-zinc-400 disabled:text-zinc-500 disabled:placeholder-zinc-400/70 dark:border-white/10 dark:bg-white/10 dark:text-zinc-300 dark:placeholder-zinc-400 dark:shadow-none sm:text-sm"
+                  placeholder="Saisissez votre mot de passe..."
+                  className="h-10 w-full rounded-md border border-zinc-300 bg-white py-2 pl-3 pr-11 text-sm text-zinc-800 outline-none transition placeholder:text-zinc-400 focus:border-[#ee8a5b] focus:ring-2 focus:ring-[#ee8a5b]/20"
                 />
-                <div className="absolute bottom-0 end-0 top-0 flex items-center pe-3 text-xs text-zinc-400">
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((value) => !value)}
-                    className="-me-1 -ms-1.5 inline-flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-sm font-medium text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 disabled:pointer-events-none disabled:cursor-default disabled:opacity-75 dark:text-zinc-400 dark:hover:bg-white/15 dark:hover:text-white"
-                    aria-label="Toggle password visibility"
-                  >
-                    {showPassword ? (
-                      <svg
-                        className="size-4 shrink-0"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3.28 2.22a.75.75 0 0 0-1.06 1.06l10.5 10.5a.75.75 0 1 0 1.06-1.06l-1.322-1.323a7.012 7.012 0 0 0 2.16-3.11.87.87 0 0 0 0-.567A7.003 7.003 0 0 0 4.82 3.76l-1.54-1.54Zm3.196 3.195 1.135 1.136A1.502 1.502 0 0 1 9.45 8.389l1.136 1.135a3 3 0 0 0-4.109-4.109Z"
-                          clipRule="evenodd"
-                        />
-                        <path d="m7.812 10.994 1.816 1.816A7.003 7.003 0 0 1 1.38 8.28a.87.87 0 0 1 0-.566 6.985 6.985 0 0 1 1.113-2.039l2.513 2.513a3 3 0 0 0 2.806 2.806Z" />
-                      </svg>
-                    ) : (
-                      <svg
-                        className="size-4 shrink-0"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((value) => !value)}
+                  className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-700 focus:outline-none"
+                  aria-label={
+                    showPassword
+                      ? "Masquer le mot de passe"
+                      : "Afficher le mot de passe"
+                  }
+                >
+                  {showPassword ? (
+                    <svg
+                      className="size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3.28 2.22a.75.75 0 0 0-1.06 1.06l10.5 10.5a.75.75 0 1 0 1.06-1.06l-1.322-1.323a7.012 7.012 0 0 0 2.16-3.11.87.87 0 0 0 0-.567A7.003 7.003 0 0 0 4.82 3.76l-1.54-1.54Zm3.196 3.195 1.135 1.136A1.502 1.502 0 0 1 9.45 8.389l1.136 1.135a3 3 0 0 0-4.109-4.109Z"
+                        clipRule="evenodd"
+                      />
+                      <path d="m7.812 10.994 1.816 1.816A7.003 7.003 0 0 1 1.38 8.28a.87.87 0 0 1 0-.566 6.985 6.985 0 0 1 1.113-2.039l2.513 2.513a3 3 0 0 0 2.806 2.806Z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </button>
               </div>
             </div>
 
-            <div className="block min-w-0">
+            <div>
               <label
                 htmlFor="confirmPassword"
-                className="mb-3 inline-flex items-center text-sm font-medium text-zinc-800 dark:text-white"
+                className="mb-2 block text-xs text-zinc-800"
               >
-                Confirm password
+                Confirmer le mot de passe
               </label>
               <input
                 id="confirmPassword"
@@ -203,35 +201,36 @@ export default function Register() {
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 required
                 autoComplete="new-password"
-                placeholder="Confirm password"
-                className="block h-10 w-full appearance-none rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 py-2 text-base leading-[1.375rem] text-zinc-700 shadow-xs placeholder-zinc-400 disabled:text-zinc-500 disabled:placeholder-zinc-400/70 dark:border-white/10 dark:bg-white/10 dark:text-zinc-300 dark:placeholder-zinc-400 dark:shadow-none sm:text-sm"
+                placeholder="Confirmez votre mot de passe..."
+                className="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-800 outline-none transition placeholder:text-zinc-400 focus:border-[#ee8a5b] focus:ring-2 focus:ring-[#ee8a5b]/20"
               />
             </div>
 
             {error && <ErrorComponent error={error} />}
 
-            <div className="flex items-center justify-end">
+            <div className="space-y-4 pt-1 text-center">
+              <Link
+                to="/login"
+                className="inline-block text-xs text-[#e8783f] transition-colors hover:text-[#bd5627] hover:underline"
+              >
+                Déjà un compte ? Se connecter
+              </Link>
+
               <button
                 type="submit"
                 disabled={isLoading}
-                className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-black/10 bg-zinc-900 px-4 text-sm font-medium text-white shadow-[inset_0px_1px_rgba(255,255,255,0.2)] hover:bg-zinc-800 disabled:pointer-events-none disabled:cursor-default disabled:opacity-75 dark:border-0 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                className="flex h-10 w-full items-center justify-center rounded-md border border-[#f29a70] bg-[#fff4ee] px-4 text-xs font-medium text-[#d96831] transition-colors hover:bg-[#fee7db] focus:outline-none focus:ring-2 focus:ring-[#ee8a5b]/35 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isLoading ? "Creating..." : "Create account"}
+                {isLoading ? "Création..." : "Créer un compte"}
               </button>
             </div>
           </form>
-
-          <div className="space-x-1 text-center text-sm text-zinc-600 dark:text-zinc-400 rtl:space-x-reverse">
-            <span>Already have an account?</span>
-            <Link
-              to="/login"
-              className="inline font-medium text-zinc-800 underline underline-offset-[6px] decoration-zinc-800/20 hover:decoration-current dark:text-white dark:decoration-white/30"
-            >
-              Log in
-            </Link>
-          </div>
         </div>
-      </div>
+      </section>
+
+      <footer className="px-6 py-5 text-xs text-white sm:px-12 lg:px-[6.5%]">
+        Copyright DataShare® 2025
+      </footer>
     </main>
   );
 }
