@@ -53,7 +53,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
   };
 
   return (
-    <li className="rounded-lg border border-[#f1c5b2] bg-white/45 px-4 py-3 transition-colors hover:bg-white">
+    <li className="ds-file-row">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">
           <svg
@@ -122,7 +122,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
               <button
                 type="button"
                 onClick={() => setIsLinkPopupOpen(true)}
-                className="inline-flex size-8 items-center justify-center rounded-md border border-[#f09a72] text-[#e46f38] transition-colors hover:bg-[#fff0e8]"
+                className="ds-file-action ds-file-action--icon"
                 aria-label="Afficher le lien de partage"
                 title="Afficher le lien de partage"
               >
@@ -143,7 +143,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
               type="button"
               onClick={handleDelete}
               disabled={isLoading}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#f09a72] px-3 text-xs text-[#e46f38] transition-colors hover:bg-[#fff0e8] disabled:cursor-not-allowed disabled:opacity-50"
+              className="ds-file-action"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -160,7 +160,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
             <button
               type="button"
               onClick={() => setIsDownloadOpen(true)}
-              className="inline-flex h-8 items-center gap-2 rounded-md border border-[#f09a72] px-3 text-xs text-[#e46f38] transition-colors hover:bg-[#fff0e8]"
+              className="ds-file-action gap-2"
             >
               Accéder
               <span aria-hidden="true">→</span>

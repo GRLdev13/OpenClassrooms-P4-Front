@@ -138,8 +138,8 @@ export default function FileUploadForm({
   };
 
   return (
-    <div className="space-y-4">
-      <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
+    <div className="ds-form">
+      <label className="ds-form-label">
         Expiration
       </label>
       <Dropdown
@@ -153,7 +153,7 @@ export default function FileUploadForm({
       <div>
         <label
           htmlFor="file-tags"
-          className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+          className="ds-form-label"
         >
           Tags
         </label>
@@ -182,13 +182,13 @@ export default function FileUploadForm({
                 onKeyDown={handleNewTagKeyDown}
                 placeholder="Create a new tag"
                 aria-label="New tag name"
-                className="min-w-0 flex-1 rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-[#ed754f] focus:ring-1 focus:ring-[#ed754f] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                className="ds-form-input min-w-0 flex-1"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
                 disabled={newTagName.trim() === ""}
-                className="rounded bg-[#ed754f] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#d95f3b] disabled:cursor-not-allowed disabled:bg-neutral-400"
+                className="ds-primary-button"
               >
                 Add
               </button>
@@ -201,7 +201,7 @@ export default function FileUploadForm({
       <div>
         <label
           htmlFor="file-password"
-          className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+          className="ds-form-label"
         >
           Password (optional)
         </label>
@@ -213,7 +213,7 @@ export default function FileUploadForm({
           autoComplete="new-password"
           placeholder="Protect this file with a password"
           disabled={isLoading}
-          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#ed754f] focus:ring-1 focus:ring-[#ed754f] disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+          className="ds-form-input"
         />
       </div>
 

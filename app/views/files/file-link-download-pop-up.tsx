@@ -1,16 +1,14 @@
-import FileUploadForm from "./file-upload";
+import FileLinkDownload from "./file-link-download";
 
-type FilePopUpProps = {
+type FileLinkDownloadPopUpProps = {
   visible: boolean;
   onHide: () => void;
-  onFileUploaded: () => void;
 };
 
-export default function FilePopUp({
+export default function FileLinkDownloadPopUp({
   visible,
   onHide,
-  onFileUploaded,
-}: FilePopUpProps) {
+}: FileLinkDownloadPopUpProps) {
   if (!visible) {
     return null;
   }
@@ -20,7 +18,7 @@ export default function FilePopUp({
       className="ds-modal-backdrop"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="upload-title"
+      aria-labelledby="link-download-title"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           onHide();
@@ -47,10 +45,13 @@ export default function FilePopUp({
           </svg>
         </button>
 
-        <h2 id="upload-title" className="mb-7 text-center text-xl font-bold">
-          Ajouter un fichier
+        <h2
+          id="link-download-title"
+          className="mb-7 text-center text-xl font-bold"
+        >
+          Télécharger depuis un lien
         </h2>
-        <FileUploadForm onFileUploaded={onFileUploaded} />
+        <FileLinkDownload />
       </section>
     </div>
   );

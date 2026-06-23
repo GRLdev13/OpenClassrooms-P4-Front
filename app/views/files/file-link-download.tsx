@@ -100,23 +100,20 @@ export default function FileLinkDownload() {
 
   if (!file) {
     return (
-      <form onSubmit={handleGetFile} className="space-y-4">
+      <form onSubmit={handleGetFile} className="ds-form">
         <div>
-          <label
-            htmlFor="file-link"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
-          >
-            File link
+          <label htmlFor="file-link" className="ds-form-label ds-coral-label">
+            Lien du fichier
           </label>
           <input
             id="file-link"
             value={fileLink}
             onChange={(event) => setFileLink(event.target.value)}
-            placeholder="Enter the file link"
+            placeholder="Collez le lien du fichier"
             disabled={isFileLoading}
             required
             autoFocus
-            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+            className="ds-form-input ds-coral-input"
           />
         </div>
 
@@ -126,9 +123,9 @@ export default function FileLinkDownload() {
           <button
             type="submit"
             disabled={isFileLoading || fileLink.trim() === ""}
-            className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
+            className="ds-primary-button ds-bright-button"
           >
-            {isFileLoading ? "Loading..." : "Find file"}
+            {isFileLoading ? "Recherche..." : "Rechercher le fichier"}
           </button>
         </div>
       </form>
@@ -136,12 +133,12 @@ export default function FileLinkDownload() {
   }
 
   return (
-    <form onSubmit={handleDownload} className="space-y-4">
-      <div className="rounded-lg border border-neutral-200 p-4 dark:border-neutral-700">
-        <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+    <form onSubmit={handleDownload} className="ds-form">
+      <div className="ds-download-summary">
+        <h2 className="text-base font-semibold text-[#bd4f2f]">
           {file.name}
         </h2>
-        <dl className="mt-3 grid gap-2 text-sm text-zinc-700 dark:text-zinc-200">
+        <dl className="mt-3 grid gap-2 text-sm text-[#a4533b]">
           <div>
             <dt className="inline font-medium">Uploaded: </dt>
             <dd className="inline">{formatDate(file.uploadDate)}</dd>
@@ -169,9 +166,9 @@ export default function FileLinkDownload() {
         <div>
           <label
             htmlFor="file-password"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+            className="ds-form-label ds-coral-label"
           >
-            Password
+            Mot de passe
           </label>
           <input
             id="file-password"
@@ -179,11 +176,11 @@ export default function FileLinkDownload() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
-            placeholder="Enter the file password"
+            placeholder="Saisissez le mot de passe"
             disabled={isDownloadLoading}
             required
             autoFocus
-            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+            className="ds-form-input ds-coral-input"
           />
         </div>
       )}
@@ -195,9 +192,9 @@ export default function FileLinkDownload() {
           type="button"
           onClick={handleClear}
           disabled={isDownloadLoading}
-          className="rounded border border-neutral-200 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:text-zinc-200 dark:hover:bg-neutral-800"
+          className="ds-clear-button"
         >
-          Clear
+          Effacer
         </button>
         <button
           type="submit"
@@ -205,9 +202,9 @@ export default function FileLinkDownload() {
             isDownloadLoading ||
             (file.hasPassword && password.trim() === "")
           }
-          className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
+          className="ds-primary-button ds-bright-button"
         >
-          {isDownloadLoading ? "Downloading..." : "Download"}
+          {isDownloadLoading ? "Téléchargement..." : "Télécharger"}
         </button>
       </div>
     </form>

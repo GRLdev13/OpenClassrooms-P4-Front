@@ -5,6 +5,16 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+:root {
+  --ds-coral: #ed754f;
+  --ds-coral-dark: #d95f3b;
+  --ds-coral-text: #e46f38;
+  --ds-coral-border: #f09a72;
+  --ds-coral-soft: #fff0e8;
+  --ds-page: #fffaf7;
+  --ds-border: #f2c5b2;
+}
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
@@ -14,16 +24,234 @@ body {
   }
 }
 
-.datashare-file-upload .p-button {
-  border-color: #ed754f;
-  background: #ed754f;
+@layer components {
+  .ds-dashboard {
+    @apply min-h-svh font-sans text-zinc-900;
+    background: var(--ds-page);
+  }
+
+  .ds-sidebar {
+    @apply flex items-center justify-between px-6 py-4 text-white;
+    background: linear-gradient(to bottom, #ffad7f, #e96267);
+  }
+
+  .ds-sidebar-link {
+    @apply block rounded-xl bg-white/55 px-4 py-3 text-sm font-medium;
+    color: #723d2f;
+  }
+
+  .ds-sidebar-action {
+    @apply mt-2 block w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-white/95 transition-colors;
+  }
+
+  .ds-sidebar-action:hover {
+    @apply bg-white/20 text-white;
+  }
+
+  .ds-topbar {
+    @apply flex min-h-14 items-center justify-end gap-5 border-b px-5 py-3;
+    border-color: #f0b59d;
+    background: var(--ds-coral-soft);
+  }
+
+  .ds-logout-button {
+    @apply inline-flex items-center gap-2 text-xs transition-colors;
+    color: #e66f38;
+  }
+
+  .ds-logout-button:hover {
+    color: #b94b1e;
+  }
+
+  .ds-content {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .ds-add-button {
+    @apply inline-flex size-8 items-center justify-center rounded-full text-2xl font-light leading-none text-white shadow-sm transition-colors focus:outline-none;
+    background: var(--ds-coral);
+  }
+
+  .ds-add-button:hover {
+    background: var(--ds-coral-dark);
+  }
+
+  .ds-add-button:focus {
+    box-shadow: 0 0 0 0.2rem rgb(237 117 79 / 25%);
+  }
+
+  .ds-card {
+    @apply rounded-xl border bg-white p-5;
+    border-color: var(--ds-border);
+  }
+
+  .ds-loading-spinner {
+    @apply mx-auto mb-3 h-9 w-9 animate-spin rounded-full border-2;
+    border-color: #f0c6b4;
+    border-bottom-color: #eb765e;
+  }
+
+  .ds-empty-state {
+    @apply rounded-lg border border-dashed p-8 text-center text-sm text-zinc-500;
+    border-color: #efbca6;
+  }
+
+  .ds-filter-group {
+    @apply mb-5 inline-flex overflow-hidden rounded-full border bg-white;
+    border-color: #efc3b0;
+  }
+
+  .ds-filter-button {
+    @apply min-w-14 px-4 py-2 text-xs transition-colors;
+  }
+
+  .ds-filter-button--active {
+    @apply text-white;
+    background: #ec7464;
+  }
+
+  .ds-filter-button--inactive {
+    @apply text-zinc-800;
+  }
+
+  .ds-filter-button--inactive:hover {
+    background: #fff0e9;
+  }
+
+  .ds-file-row {
+    @apply rounded-lg border bg-white/45 px-4 py-3 transition-colors hover:bg-white;
+    border-color: #f1c5b2;
+  }
+
+  .ds-file-action {
+    @apply inline-flex h-8 items-center gap-1.5 rounded-md border px-3 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    border-color: var(--ds-coral-border);
+    color: var(--ds-coral-text);
+  }
+
+  .ds-file-action:hover {
+    background: var(--ds-coral-soft);
+  }
+
+  .ds-file-action--icon {
+    @apply size-8 justify-center px-0;
+  }
+
+  .ds-modal-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-zinc-950/35 px-5 py-8 backdrop-blur-[2px];
+  }
+
+  .ds-modal-card {
+    @apply relative w-full max-w-[590px] rounded-xl bg-white px-5 py-7;
+    box-shadow: 0 8px 30px rgb(44 26 23 / 30%);
+  }
+
+  .ds-modal-close {
+    @apply absolute right-4 top-4 inline-flex size-8 items-center justify-center rounded-md text-zinc-400 transition-colors;
+  }
+
+  .ds-modal-close:hover {
+    color: var(--ds-coral-text);
+    background: var(--ds-coral-soft);
+  }
+
+  .ds-form {
+    @apply space-y-4;
+  }
+
+  .ds-form-label {
+    @apply mb-1 block text-sm font-medium text-zinc-700;
+  }
+
+  .ds-form-input {
+    @apply w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .ds-form-input:focus {
+    border-color: var(--ds-coral);
+    box-shadow: 0 0 0 1px var(--ds-coral);
+  }
+
+  .ds-primary-button {
+    @apply rounded px-3 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:bg-neutral-400;
+    background: var(--ds-coral);
+  }
+
+  .ds-primary-button:not(:disabled):hover {
+    background: var(--ds-coral-dark);
+  }
+
+  .ds-coral-label {
+    color: #b64f30;
+  }
+
+  .ds-coral-input {
+    border-color: #f3ae8d;
+    background: #fffaf7;
+  }
+
+  .ds-coral-input::placeholder {
+    color: #d69a83;
+  }
+
+  .ds-download-summary {
+    @apply rounded-lg border p-4;
+    border-color: #f4b99e;
+    background: linear-gradient(135deg, #fff8f2, #ffeadf);
+  }
+
+  .ds-bright-button {
+    box-shadow: 0 4px 12px rgb(237 117 79 / 25%);
+  }
+
+  .ds-clear-button {
+    @apply rounded border px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60;
+    border-color: #f3a27d;
+    color: #d85f38;
+    background: #fff9f5;
+  }
+
+  .ds-clear-button:hover {
+    border-color: var(--ds-coral);
+    background: #ffe8dc;
+  }
+
+  .datashare-file-upload .p-button {
+    border-color: var(--ds-coral);
+    background: var(--ds-coral);
+  }
+
+  .datashare-file-upload .p-button:not(:disabled):hover {
+    border-color: var(--ds-coral-dark);
+    background: var(--ds-coral-dark);
+  }
+
+  .datashare-file-upload .p-button:focus {
+    box-shadow: 0 0 0 0.2rem rgb(237 117 79 / 25%);
+  }
 }
 
-.datashare-file-upload .p-button:not(:disabled):hover {
-  border-color: #d95f3b;
-  background: #d95f3b;
+@media (min-width: 640px) {
+  .ds-topbar {
+    @apply px-8;
+  }
+
+  .ds-modal-card {
+    @apply px-6;
+  }
 }
 
-.datashare-file-upload .p-button:focus {
-  box-shadow: 0 0 0 0.2rem rgb(237 117 79 / 25%);
+@media (min-width: 768px) {
+  .ds-dashboard {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+  }
+
+  .ds-sidebar {
+    @apply fixed inset-y-0 left-0 w-[220px] flex-col items-stretch px-5 py-5;
+  }
+
+  .ds-dashboard-main {
+    grid-column-start: 2;
+  }
 }

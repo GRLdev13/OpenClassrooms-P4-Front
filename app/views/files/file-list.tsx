@@ -54,8 +54,8 @@ export default function FileList({ files, onFileDeleted }: FileListProps) {
 
   if (filesToDisplay.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-[#efbca6] p-8 text-center">
-        <p className="text-sm text-zinc-500">Aucun fichier disponible.</p>
+      <div className="ds-empty-state">
+        <p>Aucun fichier disponible.</p>
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default function FileList({ files, onFileDeleted }: FileListProps) {
   return (
     <>
       <div
-        className="mb-5 inline-flex overflow-hidden rounded-full border border-[#efc3b0] bg-white"
+        className="ds-filter-group"
         aria-label="Filtrer les fichiers"
       >
         {[
@@ -75,10 +75,10 @@ export default function FileList({ files, onFileDeleted }: FileListProps) {
             key={value}
             type="button"
             onClick={() => setFilter(value as typeof filter)}
-            className={`min-w-14 px-4 py-2 text-xs transition-colors ${
+            className={`ds-filter-button ${
               filter === value
-                ? "bg-[#ec7464] text-white"
-                : "text-zinc-800 hover:bg-[#fff0e9]"
+                ? "ds-filter-button--active"
+                : "ds-filter-button--inactive"
             }`}
           >
             {label}
@@ -97,8 +97,8 @@ export default function FileList({ files, onFileDeleted }: FileListProps) {
           ))}
         </ul>
       ) : (
-        <div className="rounded-lg border border-dashed border-[#efbca6] p-8 text-center">
-          <p className="text-sm text-zinc-500">
+        <div className="ds-empty-state">
+          <p>
             Aucun fichier dans cette catégorie.
           </p>
         </div>
