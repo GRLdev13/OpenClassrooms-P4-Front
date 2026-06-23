@@ -1,13 +1,15 @@
 import { useGetFilesQuery } from "~/services/app-service";
-import FileUploadForm from "./file-upload";
 import FileList from "./file-list";
 import FileLinkDownload from "./file-link-download";
+import FilePopUp from "./file-pop-up";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import type { RequestFilesDto } from "~/dto/file/RequestFilesDto";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function Files() {
   const navigate = useNavigate();
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -47,12 +49,6 @@ export default function Files() {
 
       <div className="md:col-start-2">
         <header className="flex min-h-14 items-center justify-end gap-5 border-b border-[#f0b59d] bg-[#fff0e8] px-5 py-3 sm:px-8">
-          <a
-            href="#file-upload"
-            className="inline-flex h-8 items-center rounded-md bg-[#2d2d2d] px-4 text-xs font-medium text-white transition-colors hover:bg-black"
-          >
-            Ajouter des fichiers
-          </a>
           <button
             type="button"
             onClick={handleLogout}
@@ -75,7 +71,20 @@ export default function Files() {
 
         <main className="px-5 py-6 sm:px-8">
           <div className="mx-auto w-full max-w-6xl">
-            <h1 className="mb-5 text-2xl font-bold">Mes fichiers</h1>
+            <div className="mb-5 flex items-center gap-3">
+              <h1 className="text-2xl font-bold">Mes fichiers</h1>
+              <button
+                type="button"
+                onClick={() => setIsUploadOpen(true)}
+                className="inline-flex size-8 items-center justify-center rounded-full bg-[#ed754f] text-2xl font-light leading-none text-white shadow-sm transition-colors hover:bg-[#d95f3b] focus:outline-none focus:ring-2 focus:ring-[#ed754f]/35"
+                aria-label="Ajouter des fichiers"
+                title="Ajouter des fichiers"
+              >
+                <span aria-hidden="true" className="-mt-0.5">
+                  +
+                </span>
+              </button>
+            </div>
 
             {error ? (
               <ErrorComponent error={error} />
@@ -97,29 +106,27 @@ export default function Files() {
               />
             )}
 
-            <div className="mt-12 grid gap-6 lg:grid-cols-2">
-              <section className="rounded-xl border border-[#f2c5b2] bg-white p-5">
+            <div className="mt-12">
+              <section className="max-w-xl rounded-xl border border-[#f2c5b2] bg-white p-5">
                 <h2 className="mb-4 text-lg font-bold">
                   Télécharger depuis un lien
                 </h2>
                 <FileLinkDownload />
               </section>
 
-              <section
-                id="file-upload"
-                className="scroll-mt-6 rounded-xl border border-[#f2c5b2] bg-white p-5"
-              >
-                <h2 className="mb-4 text-lg font-bold">Ajouter un fichier</h2>
-                <FileUploadForm
-                  onFileUploaded={() => {
-                    refetch();
-                  }}
-                />
-              </section>
             </div>
           </div>
         </main>
       </div>
+
+      <FilePopUp
+        visible={isUploadOpen}
+        onHide={() => setIsUploadOpen(false)}
+        onFileUploaded={() => {
+          refetch();
+          setIsUploadOpen(false);
+        }}
+      />
     </div>
   );
 }

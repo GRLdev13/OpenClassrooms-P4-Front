@@ -182,13 +182,13 @@ export default function FileUploadForm({
                 onKeyDown={handleNewTagKeyDown}
                 placeholder="Create a new tag"
                 aria-label="New tag name"
-                className="min-w-0 flex-1 rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                className="min-w-0 flex-1 rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-[#ed754f] focus:ring-1 focus:ring-[#ed754f] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
                 disabled={newTagName.trim() === ""}
-                className="rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
+                className="rounded bg-[#ed754f] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#d95f3b] disabled:cursor-not-allowed disabled:bg-neutral-400"
               >
                 Add
               </button>
@@ -213,11 +213,12 @@ export default function FileUploadForm({
           autoComplete="new-password"
           placeholder="Protect this file with a password"
           disabled={isLoading}
-          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#ed754f] focus:ring-1 focus:ring-[#ed754f] disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
         />
       </div>
 
       <FileUpload
+        className="datashare-file-upload"
         name="file"
         customUpload
         uploadHandler={handleUpload}

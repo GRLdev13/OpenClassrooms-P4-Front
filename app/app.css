@@ -13,3 +13,17 @@ body {
     color-scheme: dark;
   }
 }
+
+.datashare-file-upload .p-button {
+  border-color: #ed754f;
+  background: #ed754f;
+}
+
+.datashare-file-upload .p-button:not(:disabled):hover {
+  border-color: #d95f3b;
+  background: #d95f3b;
+}
+
+.datashare-file-upload .p-button:focus {
+  box-shadow: 0 0 0 0.2rem rgb(237 117 79 / 25%);
+}
