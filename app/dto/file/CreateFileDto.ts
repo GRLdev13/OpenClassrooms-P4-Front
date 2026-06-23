@@ -7,6 +7,6 @@ export class CreateFileDto {
     public rawData: string | FormData | null,
     public extension:string,
     public password:string | null,
-    public expirationTimeInDay: number, //numbers of day 1-3-7
+    public expirationTimeInDay: number,
   ) {}
 }

@@ -135,9 +135,7 @@ export default function FileLinkDownload() {
   return (
     <form onSubmit={handleDownload} className="ds-form">
       <div className="ds-download-summary">
-        <h2 className="text-base font-semibold text-[#bd4f2f]">
-          {file.name}
-        </h2>
+        <h2 className="text-base font-semibold text-[#bd4f2f]">{file.name}</h2>
         <dl className="mt-3 grid gap-2 text-sm text-[#a4533b]">
           <div>
             <dt className="inline font-medium">Uploaded: </dt>
@@ -149,7 +147,9 @@ export default function FileLinkDownload() {
           </div>
           <div>
             <dt className="inline font-medium">Status: </dt>
-            <dd className="inline">{file.hasExpired ? "Expired" : "Available"}</dd>
+            <dd className="inline">
+              {file.hasExpired ? "Expired" : "Available"}
+            </dd>
           </div>
           <div>
             <dt className="inline font-medium">Tags: </dt>
@@ -199,8 +199,7 @@ export default function FileLinkDownload() {
         <button
           type="submit"
           disabled={
-            isDownloadLoading ||
-            (file.hasPassword && password.trim() === "")
+            isDownloadLoading || (file.hasPassword && password.trim() === "")
           }
           className="ds-primary-button ds-bright-button"
         >
