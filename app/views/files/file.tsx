@@ -11,22 +11,25 @@ type FileProps = {
   onFileDeleted: () => void;
 };
 
-function formatFileDate(date: Date | string | null) {
+function formatFileExpiration(date: Date | string | null) {
   if (!date) {
-    return "";
+    return "Sans expiration";
   }
 
-  return new Date(date).toLocaleDateString();
-}
+  const expirationDate = new Date(date);
+  const differenceInDays = Math.ceil(
+    (expirationDate.getTime() - Date.now()) / 86_400_000,
+  );
 
-function formatFileTags(tags: GetFileDto["tags"]) {
-  if (!tags || !tags.length) {
-    return "No tags";
+  if (differenceInDays <= 0) {
+    return "Expiré";
   }
 
-  let toto = tags.map((tag) => tag.name).join(", ");
-  console.log(toto);
-  return toto;
+  if (differenceInDays === 1) {
+    return "Expire demain";
+  }
+
+  return `Expire dans ${differenceInDays} jours`;
 }
 
 export default function File({ file, onFileDeleted }: FileProps) {
@@ -50,74 +53,122 @@ export default function File({ file, onFileDeleted }: FileProps) {
   };
 
   return (
-    <li className="flex items-start justify-between gap-4 rounded-lg border border-neutral-200 p-3 transition hover:shadow-sm dark:border-neutral-700">
-      <div className="min-w-0">
-        <p className="flex items-center gap-1.5 text-sm text-zinc-900 dark:text-white">
-          {/* //TODO font awesome or something */}
-          {file.hasPassword && (
-            <span
-              className="text-amber-600 dark:text-amber-400"
-              title="Password protected"
+    <li className="rounded-lg border border-[#f1c5b2] bg-white/45 px-4 py-3 transition-colors hover:bg-white">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-4">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="size-5 shrink-0 text-black"
+            aria-hidden="true"
+          >
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+            <path d="M14 2v6h6M9 15l2-2 2 2 2-2" />
+          </svg>
+
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-zinc-900">
+              {file.name}
+            </p>
+            <p
+              className={`mt-0.5 text-[11px] ${
+                file.hasExpired ? "text-red-500" : "text-zinc-700"
+              }`}
+            >
+              {file.hasExpired
+                ? "Expiré"
+                : formatFileExpiration(file.expirationDate)}
+            </p>
+            {file.tags?.length > 0 && (
+              <p className="mt-1 truncate text-[10px] text-zinc-400">
+                {file.tags.map((tag) => tag.name).join(" · ")}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {file.hasExpired ? (
+          <p className="text-[11px] text-zinc-400">
+            Ce fichier a expiré, il n'est plus stocké chez nous
+          </p>
+        ) : (
+          <div className="flex shrink-0 items-center justify-end gap-2">
+            {file.hasPassword && (
+              <span
+                className="mr-1 text-zinc-800"
+                title="Protégé par mot de passe"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <rect width="16" height="10" x="4" y="11" rx="2" />
+                  <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                </svg>
+                <span className="sr-only">Protégé par mot de passe</span>
+              </span>
+            )}
+            {file.link && (
+              <button
+                type="button"
+                onClick={() => setIsLinkPopupOpen(true)}
+                className="inline-flex size-8 items-center justify-center rounded-md border border-[#f09a72] text-[#e46f38] transition-colors hover:bg-[#fff0e8]"
+                aria-label="Afficher le lien de partage"
+                title="Afficher le lien de partage"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={isLoading}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#f09a72] px-3 text-xs text-[#e46f38] transition-colors hover:bg-[#fff0e8] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="size-4"
+                strokeWidth="1.8"
+                className="size-3.5"
                 aria-hidden="true"
               >
-                <rect width="18" height="11" x="3" y="11" rx="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5" />
               </svg>
-              <span className="sr-only">Password protected</span>
-            </span>
-          )}
-          {file.name}
-        </p>
-
-        {/* //handle tags in sub combonent */}
-        <span>
-          {file.name} | {formatFileDate(file.expirationDate)} |{" "}
-          {formatFileTags(file.tags)}
-        </span>
-        {/* {file.tag?.name && (
-          <small className="mt-2 inline-block text-sm text-zinc-500 dark:text-zinc-400">
-            Tag:{" "}
-            <span className="rounded bg-blue-100 px-2 py-1 text-blue-800 dark:bg-blue-950 dark:text-blue-200">
-            {file.tag.name}
-          </span>
-          </small>
-        )} */}
-        {errorMessage && <ErrorComponent error={errorMessage} />}
+              {isLoading ? "Suppression..." : "Supprimer"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsDownloadOpen(true)}
+              className="inline-flex h-8 items-center gap-2 rounded-md border border-[#f09a72] px-3 text-xs text-[#e46f38] transition-colors hover:bg-[#fff0e8]"
+            >
+              Accéder
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        )}
       </div>
-      <div className="flex shrink-0 items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setIsLinkPopupOpen(true)}
-          disabled={!file.link}
-          className="text-sm font-medium text-blue-600 transition hover:text-blue-700 disabled:cursor-not-allowed disabled:text-neutral-400"
-        >
-          View link
-        </button>
-        <button
-          type="button"
-          onClick={() => setIsDownloadOpen(true)}
-          className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
-        >
-          Download
-        </button>
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={isLoading}
-          className="text-sm font-medium text-red-500 transition hover:text-red-600 disabled:cursor-not-allowed disabled:text-neutral-400"
-        >
-          {isLoading ? "Deleting..." : "Delete"}
-        </button>
-      </div>
+      {errorMessage && <ErrorComponent error={errorMessage} />}
       <FileDownload
         file={file}
         visible={isDownloadOpen}
