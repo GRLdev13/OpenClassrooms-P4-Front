@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { LoginUserDTO } from "~/dto/user/LoginUserDTO";
+import { LoginUserDTO } from "~/dto/user/login-user-dto";
 import { usePutLoginMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 

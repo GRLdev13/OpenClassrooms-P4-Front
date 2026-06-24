@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import { DownloadFileDto } from "~/dto/file/DownloadFileDto";
-import type { GetFileDto } from "~/dto/file/GetFileDto";
+import { DownloadFileDto } from "~/dto/file/download-file-dto";
+import type { GetFileDto } from "~/dto/file/get-file-dto";
 import {
   useDownloadFileLinkMutation,
   useDownloadFileMutation,

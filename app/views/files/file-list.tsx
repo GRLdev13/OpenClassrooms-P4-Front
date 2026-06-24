@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GetFileDto } from "~/dto/file/GetFileDto";
+import { GetFileDto } from "~/dto/file/get-file-dto";
 import File from "./file";
 
 type FileListProps = {

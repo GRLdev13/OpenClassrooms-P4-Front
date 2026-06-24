@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
+import { RegisterUserDTO } from "~/dto/user/register-user-dto";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import { usePutRegisterMutation } from "~/services/app-service";
 
@@ -29,16 +29,10 @@ export default function Register() {
 
     try {
       if(await putUser(userDTO).unwrap())
-      {
-
-      }
-      else
-      {
-        //todo exception or something
-        // throw new Exception("tutu");
-      }
       navigate("/login");
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   return (
@@ -229,7 +223,7 @@ export default function Register() {
       </section>
 
       <footer className="px-6 py-5 text-xs text-white sm:px-12 lg:px-[6.5%]">
-        Copyright DataShare® 2025
+        Copyright DataShare® 2026
       </footer>
     </main>
   );

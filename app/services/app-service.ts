@@ -1,15 +1,15 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { LoginUserDTO } from "~/dto/user/LoginUserDTO";
-import type { RegisterUserDTO } from "~/dto/user/RegisterUserDTO";
-import type { LoggedUserDTO } from "~/dto/user/LoggedUserDTO";
-import type { DeleteUserDTO } from "~/dto/user/DeleteUserDTO";
-import type { GetFileDto } from "~/dto/file/GetFileDto";
-import type { DeleteFileDto } from "~/dto/file/DeleteFileDto";
-import type { DownloadFileDto } from "~/dto/file/DownloadFileDto";
-import type { GetTagDto } from "~/dto/tag/GetTagDto";
-import type { AddTagDto } from "~/dto/tag/AddTagDto";
-import type { RequestFilesDto } from "~/dto/file/RequestFilesDto";
+import type { LoginUserDTO } from "~/dto/user/login-user-dto";
+import type { RegisterUserDTO } from "~/dto/user/register-user-dto";
+import type { LoggedUserDTO } from "~/dto/user/logged-user-dto";
+import type { DeleteUserDTO } from "~/dto/user/delete-user-dto";
+import type { GetFileDto } from "~/dto/file/get-file-dto";
+import type { DeleteFileDto } from "~/dto/file/delete-file-dto";
+import type { DownloadFileDto } from "~/dto/file/download-file-dto";
+import type { GetTagDto } from "~/dto/tag/get-tag-dto";
+import type { AddTagDto } from "~/dto/tag/add-tag-dto";
+import type { RequestFilesDto } from "~/dto/file/request-files-dto";
 
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({

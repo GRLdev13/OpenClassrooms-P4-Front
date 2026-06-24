@@ -1,4 +1,4 @@
-import type { LinkTagDto } from "../tag/TagDto";
+import type { LinkTagDto } from "../tag/tag-dto";
 
 export class CreateFileDto {
   constructor(

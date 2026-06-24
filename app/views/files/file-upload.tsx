@@ -4,9 +4,9 @@ import { FileUpload } from "primereact/fileupload";
 import { MultiSelect } from "primereact/multiselect";
 import { useGetTagsQuery, useUploadFileMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
-import { CreateFileDto } from "~/dto/file/CreateFileDto";
-import type { GetTagDto } from "~/dto/tag/GetTagDto";
-import { LinkTagDto } from "~/dto/tag/LinkTagDto";
+import { CreateFileDto } from "~/dto/file/create-file-dto";
+import type { GetTagDto } from "~/dto/tag/get-tag-dto";
+import { LinkTagDto } from "~/dto/tag/link-tag-dto";
 
 type FileUploadFormProps = {
   onFileUploaded: () => void;

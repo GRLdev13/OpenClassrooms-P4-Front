@@ -1,6 +1,6 @@
 import { Dialog } from "primereact/dialog";
 import { useState } from "react";
-import type { GetFileDto } from "~/dto/file/GetFileDto";
+import type { GetFileDto } from "~/dto/file/get-file-dto";
 
 type FileLinkPopupProps = {
   file: GetFileDto;

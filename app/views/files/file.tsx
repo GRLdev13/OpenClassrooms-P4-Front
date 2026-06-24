@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { DeleteFileDto } from "~/dto/file/DeleteFileDto";
-import { type GetFileDto } from "~/dto/file/GetFileDto";
+import { DeleteFileDto } from "~/dto/file/delete-file-dto";
+import { type GetFileDto } from "~/dto/file/get-file-dto";
 import { useDeleteFileMutation } from "~/services/app-service";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
 import FileDownload from "./file-download";

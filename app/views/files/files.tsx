@@ -3,7 +3,7 @@ import FileList from "./file-list";
 import FilePopUp from "./file-pop-up";
 import FileLinkDownloadPopUp from "./file-link-download-pop-up";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
-import type { RequestFilesDto } from "~/dto/file/RequestFilesDto";
+import type { RequestFilesDto } from "~/dto/file/request-files-dto";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 

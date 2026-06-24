@@ -1,4 +1,4 @@
-import { Authentification } from "./Authentification";
+import { Authentification } from "./authentification";
 
 export class LoginUserDTO extends Authentification {
 
