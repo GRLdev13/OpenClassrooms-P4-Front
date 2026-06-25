@@ -33,13 +33,13 @@ function formatFileExpiration(date: Date | string | null) {
 }
 
 export default function File({ file, onFileDeleted }: FileProps) {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<unknown>();
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isLinkPopupOpen, setIsLinkPopupOpen] = useState(false);
   const [deleteFile, { isLoading }] = useDeleteFileMutation();
 
   const handleDelete = async () => {
-    setErrorMessage("");
+    setErrorMessage(undefined);
 
     const deleteFileDto = new DeleteFileDto(file.id);
 
@@ -48,7 +48,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
       onFileDeleted();
     } catch (error) {
       console.log("error:", error);
-      setErrorMessage(error as any);
+      setErrorMessage(error);
     }
   };
 
@@ -168,7 +168,7 @@ export default function File({ file, onFileDeleted }: FileProps) {
           </div>
         )}
       </div>
-      {errorMessage && <ErrorComponent error={errorMessage} />}
+      {errorMessage != null && <ErrorComponent error={errorMessage} />}
       <FileDownload
         file={file}
         visible={isDownloadOpen}

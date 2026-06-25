@@ -42,7 +42,7 @@ export default function FileUploadForm({
   const [customTags, setCustomTags] = useState<GetTagDto[]>([]);
   const [newTagName, setNewTagName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<unknown>();
   const [uploadFile, { isLoading }] = useUploadFileMutation();
   const {
     data: tags = [],
@@ -75,9 +75,6 @@ export default function FileUploadForm({
       setCustomTags((currentTags) => [...currentTags, customTag]);
       setSelectedTags((currentTags) => [...currentTags, customTag]);
     }
-    console.log("customTags", customTags);
-    console.log("newTagName", newTagName);
-    console.log("selectedTags", selectedTags);
 
     setNewTagName("");
   };
@@ -99,7 +96,7 @@ export default function FileUploadForm({
     }
 
     setSuccessMessage("");
-    setErrorMessage("");
+    setErrorMessage(undefined);
 
     try {
       const createFileDto = new CreateFileDto(
@@ -115,7 +112,7 @@ export default function FileUploadForm({
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", createFileDto.name);
-      formData.append("tags", JSON.stringify(createFileDto.tags)); //TODO
+      formData.append("tags", JSON.stringify(createFileDto.tags));
       formData.append("extension", createFileDto.extension);
       formData.append(
         "expirationTimeInDay",
@@ -137,15 +134,13 @@ export default function FileUploadForm({
       onFileUploaded();
     } catch (error) {
       console.log("error:", error);
-      setErrorMessage("File upload failed.");
+      setErrorMessage(error);
     }
   };
 
   return (
     <div className="ds-form">
-      <label className="ds-form-label">
-        Expiration
-      </label>
+      <label className="ds-form-label">Expiration</label>
       <Dropdown
         className="w-full md:w-56"
         value={expirationTimeInDay}
@@ -155,10 +150,7 @@ export default function FileUploadForm({
       />
 
       <div>
-        <label
-          htmlFor="file-tags"
-          className="ds-form-label"
-        >
+        <label htmlFor="file-tags" className="ds-form-label">
           Tags
         </label>
         <MultiSelect
@@ -203,10 +195,7 @@ export default function FileUploadForm({
       </div>
 
       <div>
-        <label
-          htmlFor="file-password"
-          className="ds-form-label"
-        >
+        <label htmlFor="file-password" className="ds-form-label">
           Password (optional)
         </label>
         <input
@@ -244,7 +233,7 @@ export default function FileUploadForm({
           {successMessage}
         </p>
       )}
-      {errorMessage && <ErrorComponent error={errorMessage} />}
+      {errorMessage != null && <ErrorComponent error={errorMessage} />}
     </div>
   );
 }

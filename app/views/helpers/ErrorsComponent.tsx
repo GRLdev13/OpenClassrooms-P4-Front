@@ -1,19 +1,26 @@
-import type { SerializedError } from "@reduxjs/toolkit";
-import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-
-type ErrorComponentProps = {
-  error?: FetchBaseQueryError | SerializedError | string;
+export type ErrorComponentProps = {
+  error?: unknown;
 };
 
-function getErrorMessages(
-  error?: FetchBaseQueryError | SerializedError | string,
-): string[] {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function getErrorMessages(error?: unknown): string[] {
   if (!error) {
     return [];
   }
 
   if (typeof error === "string") {
     return [error];
+  }
+
+  if (error instanceof Error) {
+    return [error.message];
+  }
+
+  if (!isRecord(error)) {
+    return ["An unexpected error occurred"];
   }
 
   if ("data" in error) {
@@ -43,11 +50,17 @@ function getErrorMessages(
       }
     }
 
-    return [`Request failed with status ${error.status}`];
+    if (error.status) {
+      return [`Request failed with status ${String(error.status)}`];
+    }
   }
 
   if ("error" in error && typeof error.error === "string") {
     return [error.error];
+  }
+
+  if ("error" in error) {
+    return getErrorMessages(error.error);
   }
 
   if ("message" in error && typeof error.message === "string") {
