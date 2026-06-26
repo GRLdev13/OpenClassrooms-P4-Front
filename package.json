@@ -6,6 +6,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
+    "test": "jest",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
@@ -22,10 +23,17 @@
   "devDependencies": {
     "@react-router/dev": "7.16.0",
     "@tailwindcss/vite": "^4.2.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
     "tailwindcss": "^4.2.2",
+    "ts-jest": "^29.4.11",
     "typescript": "^5.9.3",
     "vite": "^8.0.3"
   }
