@@ -102,7 +102,6 @@ export default function FileUploadForm({
       const createFileDto = new CreateFileDto(
         file.name,
         selectedTags.map((tag) => new LinkTagDto(tag.name)),
-        null,
         getFileExtension(file.name),
         filePassword.trim() || null,
         expirationTimeInDay,
