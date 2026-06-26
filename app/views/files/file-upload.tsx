@@ -216,7 +216,7 @@ export default function FileUploadForm({
         customUpload
         uploadHandler={handleUpload}
         multiple={false}
-        maxFileSize={10_000_000_000}
+        maxFileSize={1_073_741_824}
         disabled={isLoading}
         chooseLabel="Choose file"
         uploadLabel={isLoading ? "Uploading..." : "Upload"}

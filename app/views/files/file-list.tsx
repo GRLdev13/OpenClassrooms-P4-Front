@@ -39,7 +39,9 @@ const fakeFiles: GetFileDto[] = [
 
 export default function FileList({ files, onFileDeleted }: FileListProps) {
   const [filter, setFilter] = useState<"all" | "active" | "expired">("all");
-  const filesToDisplay = [...fakeFiles, ...files];
+  const filesToDisplay = [
+    // ...fakeFiles,
+     ...files];
   const filteredFiles = filesToDisplay.filter((file) => {
     if (filter === "active") {
       return !file.hasExpired;
