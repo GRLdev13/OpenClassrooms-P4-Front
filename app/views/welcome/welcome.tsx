@@ -6,9 +6,18 @@ export function Welcome() {
   const navigate = useNavigate();
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
 
-  const handleUploadClick = () => {
-    const token = localStorage.getItem("token");
-    navigate(token ? "/files" : "/login");
+  const hasSessionCookie = async () => {
+    if ("cookieStore" in globalThis) {
+      return Boolean(await cookieStore.get("session_Id"));
+    }
+
+    return document.cookie
+      .split("; ")
+      .some((cookie) => cookie.startsWith("session_Id="));
+  };
+
+  const handleUploadClick = async () => {
+    navigate((await hasSessionCookie()) ? "/files" : "/login");
   };
 
   const handleDownloadClick = () => {
