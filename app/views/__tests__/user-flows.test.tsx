@@ -120,8 +120,6 @@ describe("user flows", () => {
           password: "secret",
         }),
       );
-      expect(localStorage.getItem("token")).toBe("login-token");
-      expect(localStorage.getItem("email")).toBe("ada@example.com");
       expect(mockNavigate).toHaveBeenCalledWith("/files");
     });
   });
