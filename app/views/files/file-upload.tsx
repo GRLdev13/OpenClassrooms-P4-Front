@@ -120,7 +120,6 @@ export default function FileUploadForm({
       if (createFileDto.password) {
         formData.append("password", createFileDto.password);
       }
-      formData.append("email", localStorage.getItem("email") ?? "");
 
       await uploadFile(formData).unwrap();
 

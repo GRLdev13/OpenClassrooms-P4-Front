@@ -9,7 +9,6 @@ import type { DeleteFileDto } from "~/dto/file/delete-file-dto";
 import type { DownloadFileDto } from "~/dto/file/download-file-dto";
 import type { GetTagDto } from "~/dto/tag/get-tag-dto";
 import type { AddTagDto } from "~/dto/tag/add-tag-dto";
-import type { RequestFilesDto } from "~/dto/file/request-files-dto";
 
 // Define a service using a base URL and expected endpoints
 export const dashBoardApi = createApi({
@@ -18,18 +17,8 @@ export const dashBoardApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/",
     credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-      let state = getState() as any; //State saves every reference to other slices of redux states
-      let lToken = localStorage.getItem("token");
-      headers.set(
-        "Authorization",
-        `Bearer ${state?.user?.token ? state?.user?.token : lToken}`,
-      );
-      console.log(
-        "token set ?",
-        state?.user?.token ? state?.user?.token : lToken,
-      );
-      //TODO: XSRF token + token
+    prepareHeaders: (headers) => {
+      return headers;
     },
   }),
   refetchOnMountOrArgChange: true,
@@ -57,6 +46,12 @@ export const dashBoardApi = createApi({
         },
       }),
     }),
+    putLogout: builder.mutation<void, void>({
+      query: () => ({
+        url: `/user/logout`,
+        method: "POST",
+      }),
+    }),
     deleteUser: builder.mutation<DeleteUserDTO, Partial<DeleteUserDTO>>({
       query: (user) => ({
         url: `user`,
@@ -75,11 +70,10 @@ export const dashBoardApi = createApi({
         body: formData,
       }),
     }),
-    getFiles: builder.query<GetFileDto[], RequestFilesDto>({
-        query: (query) => ({
-        url: `file`,
-        method: "POST",
-        body: query,
+    getFiles: builder.query<GetFileDto[], void>({
+        query: () => ({
+        url: `file/files`,
+        method: "GET",
       }),
     }),
     downloadFileLink: builder.mutation<GetFileDto, string>({
@@ -141,6 +135,7 @@ export const dashBoardApi = createApi({
 
 // Export hooks for usage in functional components
 export const { usePutLoginMutation } = dashBoardApi;
+export const { usePutLogoutMutation } = dashBoardApi;
 export const { usePutRegisterMutation } = dashBoardApi;
 export const { useDeleteUserMutation } = dashBoardApi;
 export const { useUploadFileMutation } = dashBoardApi;

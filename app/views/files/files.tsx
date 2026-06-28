@@ -1,9 +1,8 @@
-import { useGetFilesQuery } from "~/services/app-service";
+import { useGetFilesQuery, usePutLogoutMutation } from "~/services/app-service";
 import FileList from "./file-list";
 import FilePopUp from "./file-pop-up";
 import FileLinkDownloadPopUp from "./file-link-download-pop-up";
 import ErrorComponent from "~/views/helpers/ErrorsComponent";
-import type { RequestFilesDto } from "~/dto/file/request-files-dto";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -11,10 +10,16 @@ export default function Files() {
   const navigate = useNavigate();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isLinkDownloadOpen, setIsLinkDownloadOpen] = useState(false);
+  const [logout] = usePutLogoutMutation();
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login", { replace: true });
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+    } finally {
+      localStorage.clear();
+      cookieStore.delete("session_id");
+      navigate("/login", { replace: true });
+    }
   };
 
   const {
@@ -23,14 +28,7 @@ export default function Files() {
     isFetching,
     isLoading,
     refetch,
-  } = useGetFilesQuery(
-    {
-      id: localStorage.getItem("id"),
-      email: localStorage.getItem("email"),
-      token: localStorage.getItem("token"),
-    } as RequestFilesDto,
-    { refetchOnMountOrArgChange: true },
-  );
+  } = useGetFilesQuery();
 
   return (
     <div className="ds-dashboard">

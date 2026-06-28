@@ -5,3 +5,7 @@
 # React Router
 /.react-router/
 /build/
+app/documentation/*
+app/coverage/*
+/coverage/*
+package-lock.json
